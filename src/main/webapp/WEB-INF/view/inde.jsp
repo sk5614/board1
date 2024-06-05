@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-인덱스 페이지!!!!
+인덱스 페이지!!!!@@@
 </body>
 </html>

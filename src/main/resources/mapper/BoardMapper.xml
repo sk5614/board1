@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.board.mapper.BoardMapper">
+    <resultMap id="BoardResultMap" type="com.boot.board.domain.Board">
+        <id property="b_id" column="id"/>
+        <result property="b_title" column="title"/>
+        <result property="b_content" column="content"/>
+        <result property="b_date" column="created_at"/>
+    </resultMap>
+
+    <select id="selectBoardList" resultMap="BoardResultMap">
+    SELECT * FROM board
+    ORDER BY id DESC
+    </select>
+</mapper>
