@@ -19,18 +19,17 @@ public class BoardController {
 	
 	
 	
-//	@RequestMapping(value="/", method = RequestMethod.GET)
-	@GetMapping(value="/")
+	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String index() {
 		System.out.println("인덱스 페이지 호출");
 		return "index";
 	}
 	
-	@GetMapping(value="/board/list")
-	 public String boardList(){ 
-//		  List<Board> list= boardservice.selectBoardList();  
-//		  model.addAttribute("boards", list);
-		  return "/board_list";
+	@GetMapping(value="/list")
+	 public String boardList(Model model){ 
+		  List<Board> list= boardservice.selectBoardList();  
+		  model.addAttribute("boards", list);
+		  return "board_list";
 	   }
 	
 

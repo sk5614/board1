@@ -12,7 +12,8 @@
     </resultMap>
 
     <select id="selectBoardList" resultMap="BoardResultMap">
-    SELECT * FROM board
+    SELECT id,title,content 
+    FROM board
     ORDER BY id DESC
     </select>
 </mapper>
