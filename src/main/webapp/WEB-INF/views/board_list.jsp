@@ -17,9 +17,10 @@
     </tr>
      <c:forEach var="board" items="${boards}">
         <tr>
-            <td>${board.id}</td>
-            <td>${board.title}</td>
-            <td>${board.content}</td>
+            <td>${board.b_id}</td>
+            <td>${board.b_title}</td>
+            <td>${board.b_date}</td>
+            <td>${board.b_content}</td>
         </tr>
     </c:forEach>  
 </table>
