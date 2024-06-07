@@ -11,10 +11,26 @@
     </resultMap>
 
     <select id="selectBoardList" resultMap="BoardResultMap">
-    SELECT id,title,content,created_at 
-    FROM board
-    ORDER BY id DESC
+	    SELECT id,title,content,created_at 
+	    FROM board
+	    ORDER BY id DESC
     </select>
     
+    <insert id="writeBoard" >
+	    INSERT INTO board (title, content, created_at)
+	    VALUES (#{b_title}, #{b_content}, NOW() )
+    </insert>
+    
+    <select id="infoBoard" resultMap="BoardResultMap">
+	    SELECT *
+	    FROM board
+	    WHERE id= ${b_id}
+    </select>
+    
+    <delete id="deleteBoard" >
+    	DELETE 
+    	FROM board 
+    	WHERE id=#{b_id}
+    </delete>
     
 </mapper>

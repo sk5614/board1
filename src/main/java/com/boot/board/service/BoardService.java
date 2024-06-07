@@ -17,4 +17,24 @@ public class BoardService {
 	        return boardmapper.selectBoardList();
 	    }
 	
-}
+
+	public void writeBoard(Board board) {
+		boardmapper.writeBoard(board);
+		
+	}
+
+
+	public void deleteBoard(int id) {
+		boardmapper.deleteBoard(id);
+	}
+
+
+	public Board infoBoard(int id) {
+		return boardmapper.infoBoard(id);
+		
+	}
+
+
+
+
+}	

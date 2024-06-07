@@ -10,4 +10,10 @@ public interface BoardMapper {
     
     public List<Board> selectBoardList();
     
+    public void writeBoard(Board board);
+
+	public void deleteBoard(int id);
+
+	public Board infoBoard(int id);
+
 }

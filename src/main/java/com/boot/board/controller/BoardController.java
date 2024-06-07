@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -25,12 +26,34 @@ public class BoardController {
 		return "index";
 	}
 	
-	@GetMapping(value="/list")
+	@GetMapping(value="/board/list")
 	 public String boardList(Model model){ 
 		  List<Board> list= boardservice.selectBoardList();  
 		  model.addAttribute("boards", list);
 		  return "board_list";
 	   }
 	
+	@GetMapping(value="/board/write")
+	 public String boardWrite(){ 
+		  return "board_write";
+	   }
+	
+	@PostMapping(value="/board/writepro")
+	 public String boardWritePro(Board board){
+		boardservice.writeBoard(board);
+		 return "redirect:/board/list";
+	   }
+	
+	@GetMapping(value="/board/info")
+	public String boardInfo(Model model,int id) {
+		model.addAttribute("board", boardservice.infoBoard(id));
+		return "board_info";
+	}
+	
+	@GetMapping(value="/board/delete")
+	public String boardDelete(Model model,int id) {
+		boardservice.deleteBoard(id);
+		return "redirect:/board/list";
+	}
 
 }
