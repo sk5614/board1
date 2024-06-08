@@ -33,4 +33,11 @@
     	WHERE id=#{b_id}
     </delete>
     
+    <update id="editBoard" parameterType="Board"   >
+    	UPDATE board
+    	SET title=#{b_title}
+    		content=${b_content}
+    	WHERE id=#{b_id}	
+    </update>
+    
 </mapper>

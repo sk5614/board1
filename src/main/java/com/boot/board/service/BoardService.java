@@ -35,6 +35,11 @@ public class BoardService {
 	}
 
 
+	public void editBoard(Board board) {
+		 boardmapper.editBoard(board);
+	}
+
+
 
 
 }	

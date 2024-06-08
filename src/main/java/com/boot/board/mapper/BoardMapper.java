@@ -16,4 +16,6 @@ public interface BoardMapper {
 
 	public Board infoBoard(int id);
 
+	public Object editBoard(Board board);
+
 }

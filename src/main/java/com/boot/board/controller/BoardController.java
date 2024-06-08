@@ -55,5 +55,17 @@ public class BoardController {
 		boardservice.deleteBoard(id);
 		return "redirect:/board/list";
 	}
+	
+	@GetMapping(value="/board/edit")
+	 public String boardEdit(Model model,Board board){
+		  return "board_edit";
+	   }
+	
+	@RequestMapping(value="/board/editpro")
+	 public String boardEditPro(Board board){
+		boardservice.editBoard(board);
+		 return "redirect:/board/info"+board.getB_id();
+	   }
+	
 
 }
