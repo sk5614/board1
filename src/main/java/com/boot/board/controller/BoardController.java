@@ -58,6 +58,7 @@ public class BoardController {
 	
 	@GetMapping(value="/board/edit")
 	 public String boardEdit(Model model,Board board){
+		model.addAttribute("board", boardservice.infoBoard(board.getB_id()));
 		  return "board_edit";
 	   }
 	

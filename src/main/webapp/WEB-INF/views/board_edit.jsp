@@ -16,8 +16,8 @@
   <form action="/board/editpro?id=${board.b_id}" name="board" method="post">
     <div class="mb-3 mt-3">
     	<input type="hidden" name="id" value="${board.b_id}"/>
-      	<input type="text" class="form-control" style="width:50%"  placeholder="제목" name="b_title">
-      <textarea class="form-control" style="width:50%" rows="10"  name="b_content"  placeholder="내용"></textarea>
+      	<input type="text" class="form-control" style="width:50%"  value="${board.b_title}" name="b_title" >
+      <textarea class="form-control" style="width:50%" rows="10"  name="b_content"  placeholder="${board.b_content}" ></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
