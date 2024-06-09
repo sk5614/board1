@@ -14,8 +14,8 @@ public interface BoardMapper {
 
 	public void deleteBoard(int id);
 
-	public Board infoBoard(int id);
+	public Board infoBoard(Board board);
 
-	public Object editBoard(Board board);
+	public void editBoard(Board board);
 
 }

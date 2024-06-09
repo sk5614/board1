@@ -33,7 +33,7 @@
         <tbody>
         	<tr>
 	            <td>${board.b_id}</td>
-	            <td>${board.b_title}</td>
+	            <td><a href="/board/info?b_id=${board.b_id}">${board.b_title}</a></td>
 	            <td>${board.b_date}</td>
 	            <td>${board.b_content}</td>
             </tr>

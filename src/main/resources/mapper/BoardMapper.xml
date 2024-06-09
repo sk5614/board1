@@ -21,7 +21,7 @@
 	    VALUES (#{b_title}, #{b_content}, NOW() )
     </insert>
     
-    <select id="infoBoard" resultMap="BoardResultMap">
+    <select id="infoBoard" parameterType="Board" resultMap="BoardResultMap">
 	    SELECT *
 	    FROM board
 	    WHERE id= ${b_id}
@@ -33,10 +33,10 @@
     	WHERE id=#{b_id}
     </delete>
     
-    <update id="editBoard" parameterType="Board"   >
+    <update id="editBoard" parameterType="Board">
     	UPDATE board
-    	SET title=#{b_title}
-    		content=${b_content}
+    	SET title=#{b_title},
+    		content=#{b_content}
     	WHERE id=#{b_id}	
     </update>
     

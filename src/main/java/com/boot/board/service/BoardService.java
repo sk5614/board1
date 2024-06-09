@@ -29,8 +29,8 @@ public class BoardService {
 	}
 
 
-	public Board infoBoard(int id) {
-		return boardmapper.infoBoard(id);
+	public Board infoBoard(Board board) {
+		return boardmapper.infoBoard(board);
 		
 	}
 

@@ -33,6 +33,6 @@
 			</tr>
 	</table>
 	
-	<a href="/board/edit?id=${board.b_id}" style="width: 10%; background-color: #818181; color: #fff;">수정</a>
+	<a href="/board/edit?b_id=${board.b_id}" style="width: 10%; background-color: #818181; color: #fff;">수정</a>
 </body>
 </html>

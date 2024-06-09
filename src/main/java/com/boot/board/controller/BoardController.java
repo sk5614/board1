@@ -45,8 +45,8 @@ public class BoardController {
 	   }
 	
 	@GetMapping(value="/board/info")
-	public String boardInfo(Model model,int id) {
-		model.addAttribute("board", boardservice.infoBoard(id));
+	public String boardInfo(Model model,Board board) {
+		model.addAttribute("board", boardservice.infoBoard(board));
 		return "board_info";
 	}
 	
@@ -58,14 +58,14 @@ public class BoardController {
 	
 	@GetMapping(value="/board/edit")
 	 public String boardEdit(Model model,Board board){
-		model.addAttribute("board", boardservice.infoBoard(board.getB_id()));
+		model.addAttribute("board", boardservice.infoBoard(board));
 		  return "board_edit";
 	   }
 	
 	@RequestMapping(value="/board/editpro")
 	 public String boardEditPro(Board board){
 		boardservice.editBoard(board);
-		 return "redirect:/board/info"+board.getB_id();
+		 return "redirect:/board/info?b_id="+board.getB_id();
 	   }
 	
 

@@ -13,7 +13,7 @@
 
 <div class="container mt-3">
   <h2>글작성</h2>
-  <form action="/board/editpro?id=${board.b_id}" name="board" method="post">
+  <form action="/board/editpro?b_id=${board.b_id}" name="board" method="post">
     <div class="mb-3 mt-3">
     	<input type="hidden" name="id" value="${board.b_id}"/>
       	<input type="text" class="form-control" style="width:50%"  value="${board.b_title}" name="b_title" >
