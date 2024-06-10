@@ -12,7 +12,7 @@ public interface BoardMapper {
     
     public void writeBoard(Board board);
 
-	public void deleteBoard(int id);
+	public void deleteBoard(Board board);
 
 	public Board infoBoard(Board board);
 

@@ -51,8 +51,8 @@ public class BoardController {
 	}
 	
 	@GetMapping(value="/board/delete")
-	public String boardDelete(Model model,int id) {
-		boardservice.deleteBoard(id);
+	public String boardDelete(Model model,Board board) {
+		boardservice.deleteBoard(board);
 		return "redirect:/board/list";
 	}
 	

@@ -24,8 +24,8 @@ public class BoardService {
 	}
 
 
-	public void deleteBoard(int id) {
-		boardmapper.deleteBoard(id);
+	public void deleteBoard(Board board) {
+		boardmapper.deleteBoard(board);
 	}
 
 

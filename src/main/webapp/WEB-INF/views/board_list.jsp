@@ -23,10 +23,9 @@
   <table class="table table-hover" style="width:50%">
     <thead>
     	<tr>
-	        <td>ID</td>
-	        <td>Title</td>
-	        <td>Created At</td>
-	        <td>Action</td>
+	        <td style="width:5%;">ID</td>
+	        <td style="width:70%;">Title</td>
+	        <td style="width:25%;">Date</td>
         </tr>
     </thead>
      <c:forEach var="board" items="${boards}">
@@ -34,8 +33,7 @@
         	<tr>
 	            <td>${board.b_id}</td>
 	            <td><a href="/board/info?b_id=${board.b_id}">${board.b_title}</a></td>
-	            <td>${board.b_date}</td>
-	            <td>${board.b_content}</td>
+	            <td style="font-size: 0.8em;">${board.b_date}</td>
             </tr>
         </tbody>
     </c:forEach>  
