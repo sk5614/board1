@@ -18,4 +18,10 @@ public interface BoardMapper {
 
 	public void editBoard(Board board);
 
+	public void setGroup();
+
+	public void setReply(Board board);
+
+	public void replyBoard(Board board);
+
 }

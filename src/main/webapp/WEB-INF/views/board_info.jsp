@@ -32,7 +32,7 @@
 				<td height="300">${board.b_content}</td>
 			</tr>
 	</table>
-	
+	<a href="/board/reply?b_id=${board.b_id}&b_group=${board.b_group}&b_order=${board.b_order}&b_depth=${board.b_depth}" style="width: 10%; background-color: #818181; color: #fff;">답글</a>
 	<a href="/board/edit?b_id=${board.b_id}" style="width: 10%; background-color: #818181; color: #fff;">수정</a>
 	<a href="/board/delete?b_id=${board.b_id}" style="width: 10%; background-color: #818181; color: #fff;">삭제</a>
 </body>

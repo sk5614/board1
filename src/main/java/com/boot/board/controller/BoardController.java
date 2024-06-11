@@ -15,58 +15,69 @@ import com.boot.board.service.BoardService;
 
 @Controller
 public class BoardController {
-	
-	@Autowired BoardService boardservice;
-	
-	
-	
-	@RequestMapping(value="/", method = RequestMethod.GET)
+
+	@Autowired
+	BoardService boardservice;
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
 		System.out.println("인덱스 페이지 호출");
 		return "index";
 	}
-	
-	@GetMapping(value="/board/list")
-	 public String boardList(Model model){ 
-		  List<Board> list= boardservice.selectBoardList();  
-		  model.addAttribute("boards", list);
-		  return "board_list";
-	   }
-	
-	@GetMapping(value="/board/write")
-	 public String boardWrite(){ 
-		  return "board_write";
-	   }
-	
-	@PostMapping(value="/board/writepro")
-	 public String boardWritePro(Board board){
+
+	@GetMapping(value = "/board/list")
+	public String boardList(Model model) {
+		List<Board> list = boardservice.selectBoardList();
+		model.addAttribute("boards", list);
+		return "board_list";
+	}
+
+	@GetMapping(value = "/board/write")
+	public String boardWrite() {
+		return "board_write";
+	}
+
+	@PostMapping(value = "/board/writepro")
+	public String boardWritePro(Board board) {
 		boardservice.writeBoard(board);
-		 return "redirect:/board/list";
-	   }
-	
-	@GetMapping(value="/board/info")
-	public String boardInfo(Model model,Board board) {
+		return "redirect:/board/list";
+	}
+
+	@GetMapping(value = "/board/info")
+	public String boardInfo(Model model, Board board) {
 		model.addAttribute("board", boardservice.infoBoard(board));
 		return "board_info";
 	}
-	
-	@GetMapping(value="/board/delete")
-	public String boardDelete(Model model,Board board) {
+
+	@GetMapping(value = "/board/delete")
+	public String boardDelete(Model model, Board board) {
 		boardservice.deleteBoard(board);
 		return "redirect:/board/list";
 	}
-	
-	@GetMapping(value="/board/edit")
-	 public String boardEdit(Model model,Board board){
+
+	@GetMapping(value = "/board/edit")
+	public String boardEdit(Model model, Board board) {
 		model.addAttribute("board", boardservice.infoBoard(board));
-		  return "board_edit";
-	   }
-	
-	@RequestMapping(value="/board/editpro")
-	 public String boardEditPro(Board board){
+		return "board_edit";
+	}
+
+	@RequestMapping(value = "/board/editpro")
+	public String boardEditPro(Board board) {
 		boardservice.editBoard(board);
-		 return "redirect:/board/info?b_id="+board.getB_id();
-	   }
-	
+		return "redirect:/board/info?b_id=" + board.getB_id();
+	}
+
+	@GetMapping(value = "/board/reply")
+	public String boardReply(Model model, Board board) {
+		model.addAttribute("board", boardservice.infoBoard(board));
+		return "/board_reply";
+	}
+
+	@PostMapping(value = "/board/replypro") // 답글
+	public String replyBoardPro(Model model, Board board) {
+		model.addAttribute("board", boardservice.infoBoard(board));
+		boardservice.replyBoard(board);
+		return "redirect:/board/list"; // 이전화면으로 리다이렉트
+	}
 
 }

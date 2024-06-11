@@ -11,35 +11,35 @@ import com.boot.board.mapper.BoardMapper;
 @Service
 public class BoardService {
 
-@Autowired BoardMapper boardmapper;	
-	
-	  public List<Board> selectBoardList() {
-	        return boardmapper.selectBoardList();
-	    }
-	
+	@Autowired
+	BoardMapper boardmapper;
+
+	public List<Board> selectBoardList() {
+		return boardmapper.selectBoardList();
+	}
 
 	public void writeBoard(Board board) {
 		boardmapper.writeBoard(board);
-		
-	}
+		boardmapper.setGroup();
 
+	}
 
 	public void deleteBoard(Board board) {
 		boardmapper.deleteBoard(board);
 	}
 
-
 	public Board infoBoard(Board board) {
 		return boardmapper.infoBoard(board);
-		
-	}
 
+	}
 
 	public void editBoard(Board board) {
-		 boardmapper.editBoard(board);
+		boardmapper.editBoard(board);
 	}
 
+	public void replyBoard(Board board) {
+		boardmapper.replyBoard(board);
+		boardmapper.setReply(board);
+	}
 
-
-
-}	
+}

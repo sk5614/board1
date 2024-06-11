@@ -32,7 +32,11 @@
         <tbody>
         	<tr>
 	            <td>${board.b_id}</td>
-	            <td><a href="/board/info?b_id=${board.b_id}">${board.b_title}</a></td>
+	            <td><a href="/board/info?b_id=${board.b_id}">
+	            <c:forEach begin="1" end="${board.b_depth}" step="1">
+				<span class="badge bg-secondary">RE</span>
+				</c:forEach>
+				${board.b_title}</a></td>
 	            <td style="font-size: 0.8em;">${board.b_date}</td>
             </tr>
         </tbody>

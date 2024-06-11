@@ -8,12 +8,15 @@
         <result property="b_title" column="title"/>
         <result property="b_content" column="content"/>
         <result property="b_date" column="created_at"/>
+        <result property="b_group" column="group"/>
+        <result property="b_order" column="order"/>
+        <result property="b_depth" column="depth"/>
     </resultMap>
 
     <select id="selectBoardList" resultMap="BoardResultMap">
-	    SELECT id,title,content,created_at 
+	    SELECT id,title,content,created_at,`group`,`order`,depth
 	    FROM board
-	    ORDER BY id DESC
+	    ORDER BY `group` DESC, `order` ASC, depth ASC
     </select>
     
     <insert id="writeBoard" >
@@ -21,21 +24,21 @@
 	    VALUES (#{b_title}, #{b_content}, NOW() )
     </insert>
     
-    <update id="setGroup" parameterType="Board">
+    <update id="setGroup" >
 	    UPDATE board 
-	    SET	group=LAST_INSERT_ID() 
+	    SET	`group`=LAST_INSERT_ID() 
 	    WHERE id=LAST_INSERT_ID()
     </update>
     
     <insert id="replyBoard" parameterType="Board">
-    	INSERT INTO board (title, content, created_at, group,order,depth)
-    	VALUES (#{b_title},#{b_content}, #{b_date}, #{b_group}, #{b_order}, #{b_depth})
+    	INSERT INTO board (title, content, created_at, `group`, `order`, depth)
+    	VALUES (#{b_title},#{b_content}, NOW(), #{b_group}, #{b_order}+1, #{b_depth}+1)
     </insert>
 	
 	<update id="setReply" parameterType="Board">
 		UPDATE board 
-		SET order=order+1 
-		WHERE group = #{b_group} and order>=#{b_order} and b_id!=LAST_INSER_ID()
+		SET `order`=`order`+1 
+		WHERE `group`=#{b_group} and `order`>#{b_order} and id!=LAST_INSERT_ID()
 	</update>
 	
     <select id="infoBoard" parameterType="Board" resultMap="BoardResultMap">
