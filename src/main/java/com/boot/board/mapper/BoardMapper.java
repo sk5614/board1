@@ -8,7 +8,9 @@ import java.util.List;
 @Mapper
 public interface BoardMapper {
     
-    public List<Board> selectBoardList();
+    public List<Board> selectBoardList(int offset, int limit);
+    
+    public int countBoard();
     
     public void writeBoard(Board board);
 
@@ -24,4 +26,5 @@ public interface BoardMapper {
 
 	public void replyBoard(Board board);
 
+	
 }

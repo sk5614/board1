@@ -14,10 +14,14 @@ public class BoardService {
 	@Autowired
 	BoardMapper boardmapper;
 
-	public List<Board> selectBoardList() {
-		return boardmapper.selectBoardList();
+	public List<Board> selectBoardList(int limit, int offset) {
+		return boardmapper.selectBoardList(limit,offset);
 	}
 
+	public int countBoard() {
+		return boardmapper.countBoard();
+	}
+	
 	public void writeBoard(Board board) {
 		boardmapper.writeBoard(board);
 		boardmapper.setGroup();

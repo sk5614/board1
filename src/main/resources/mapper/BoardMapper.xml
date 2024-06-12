@@ -16,8 +16,13 @@
     <select id="selectBoardList" resultMap="BoardResultMap">
 	    SELECT id,title,content,created_at,`group`,`order`,depth
 	    FROM board
-	    ORDER BY `group` DESC, `order` ASC, depth ASC
+	    ORDER BY `group` DESC, `order` ASC, depth ASC 
+	    LIMIT #{limit} OFFSET #{offset}
     </select>
+    
+    <select id="countBoard" resultType="int">
+		SELECT COUNT(*) FROM board
+	</select>
     
     <insert id="writeBoard" >
 	    INSERT INTO board (title, content, created_at)
@@ -38,7 +43,7 @@
 	<update id="setReply" parameterType="Board">
 		UPDATE board 
 		SET `order`=`order`+1 
-		WHERE `group`=#{b_group} and `order`>#{b_order} and id!=LAST_INSERT_ID()
+		WHERE `group`=#{b_group} and `order`>#{b_order} and id!=LAST_INSERT_ID() 
 	</update>
 	
     <select id="infoBoard" parameterType="Board" resultMap="BoardResultMap">

@@ -15,6 +15,13 @@
 <div> 
 <button type="button" class="btn btn-outline-primary">홈</button>
 <button type="button" class="btn btn-outline-primary">목록</button>
+<button type="button" class="btn btn-outline-primary" onclick="goToWrite()"> 글쓰기 </button>
+
+    <script>
+        function goToWrite() {
+            window.location.href = "/board/write";
+        }
+    </script>
 
 </div>
 <h1>Board List</h1>
