@@ -1,5 +1,6 @@
 package com.boot.board.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.boot.board.domain.Board;
 import com.boot.board.service.BoardService;
@@ -26,9 +28,28 @@ public class BoardController {
 	}
 
 	@GetMapping(value = "/board/list")
-	public String boardList(Model model) {
-		List<Board> list = boardservice.selectBoardList();
-		model.addAttribute("boards", list);
+	public String boardList(Model model, 
+			@RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+		List<Board> list = boardservice.selectBoardList(page, size);
+		
+        int totalBoards = boardservice.countBoard();
+        int totalPages = (int) Math.ceil((double) totalBoards / size);
+
+        int startPage = Math.max(1, page - 4);
+        int endPage = Math.min(startPage + 5, totalPages);
+
+        List<Integer> pageNumbers = new ArrayList<>();
+        for (int i = startPage; i <= endPage; i++) {
+            pageNumbers.add(i);
+        }
+        model.addAttribute("boards", list);
+        model.addAttribute("size", size);
+        model.addAttribute("nowPage", page);  // 현재 페이지 번호
+        model.addAttribute("startPage", startPage);  // 시작 페이지 번호
+        model.addAttribute("endPage", endPage);  // 끝 페이지 번호
+        model.addAttribute("totalPages", totalPages);  // 전체 페이지 수
+        model.addAttribute("pageNumbers", pageNumbers);  // 페이지 번호 목록
 		return "board_list";
 	}
 

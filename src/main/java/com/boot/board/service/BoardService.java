@@ -14,8 +14,9 @@ public class BoardService {
 	@Autowired
 	BoardMapper boardmapper;
 
-	public List<Board> selectBoardList(int limit, int offset) {
-		return boardmapper.selectBoardList(limit,offset);
+	public List<Board> selectBoardList(int page, int size) {
+		int offset = (page-1)*size;
+		return boardmapper.selectBoardList(size,offset);
 	}
 
 	public int countBoard() {
