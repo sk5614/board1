@@ -85,7 +85,7 @@ public class BoardController {
 	@RequestMapping(value = "/board/editpro")
 	public String boardEditPro(Board board) {
 		boardservice.editBoard(board);
-		return "redirect:/board/info?b_id=" + board.getB_id();
+		return "redirect:/board/info?bId=" + board.getbId();
 	}
 
 	@GetMapping(value = "/board/reply")

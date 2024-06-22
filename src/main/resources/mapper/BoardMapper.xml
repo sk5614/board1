@@ -4,19 +4,19 @@
 <mapper namespace="com.boot.board.mapper.BoardMapper">
 
     <resultMap id="BoardResultMap" type="com.boot.board.domain.Board">
-        <id property="b_id" column="id"/>
-        <result property="b_title" column="title"/>
-        <result property="b_content" column="content"/>
-        <result property="b_date" column="created_at"/>
-        <result property="b_group" column="group"/>
-        <result property="b_order" column="order"/>
-        <result property="b_depth" column="depth"/>
+        <id property="bId" column="b_id"/>
+        <result property="bTitle" column="b_title"/>
+        <result property="bContent" column="b_content"/>
+        <result property="bDate" column="b_date"/>
+        <result property="bGroup" column="b_group"/>
+        <result property="bOrder" column="b_order"/>
+        <result property="bDepth" column="b_depth"/>
     </resultMap>
 
     <select id="selectBoardList" resultMap="BoardResultMap">
-	    SELECT id,title,content,created_at,`group`,`order`,depth
+	    SELECT b_id,b_title,b_content,b_date,b_group,b_order,b_depth
 	    FROM board
-	    ORDER BY `group` DESC, `order` ASC, depth ASC 
+	    ORDER BY b_group DESC, b_order ASC, b_depth ASC 
 	    LIMIT #{limit} OFFSET #{offset}
     </select>
     
@@ -25,44 +25,44 @@
 	</select>
     
     <insert id="writeBoard" >
-	    INSERT INTO board (title, content, created_at)
-	    VALUES (#{b_title}, #{b_content}, NOW() )
+	    INSERT INTO board (b_title, b_content, b_date)
+	    VALUES (#{bTitle}, #{bContent}, NOW() )
     </insert>
     
     <update id="setGroup" >
 	    UPDATE board 
-	    SET	`group`=LAST_INSERT_ID() 
-	    WHERE id=LAST_INSERT_ID()
+	    SET	b_group=LAST_INSERT_id() 
+	    WHERE b_id=LAST_INSERT_id()
     </update>
     
     <insert id="replyBoard" parameterType="Board">
-    	INSERT INTO board (title, content, created_at, `group`, `order`, depth)
-    	VALUES (#{b_title},#{b_content}, NOW(), #{b_group}, #{b_order}+1, #{b_depth}+1)
+    	INSERT INTO board (b_title, b_content, b_date, b_group, b_order, b_depth)
+    	VALUES (#{bTitle}, #{bContent}, NOW(), #{bGroup}, #{bOrder}+1, #{bDepth}+1)
     </insert>
 	
 	<update id="setReply" parameterType="Board">
 		UPDATE board 
-		SET `order`=`order`+1 
-		WHERE `group`=#{b_group} and `order`>#{b_order} and id!=LAST_INSERT_ID() 
+		SET b_order=b_order+1 
+		WHERE b_group=#{bGroup} and b_order>#{bOrder} and b_id!=LAST_INSERT_id() 
 	</update>
 	
     <select id="infoBoard" parameterType="Board" resultMap="BoardResultMap">
 	    SELECT *
 	    FROM board
-	    WHERE id= ${b_id}
+	    WHERE b_id= ${bId}
     </select>
     
     <delete id="deleteBoard" parameterType="Board" >
     	DELETE 
     	FROM board 
-    	WHERE id=#{b_id}
+    	WHERE b_id=#{bId}
     </delete>
     
     <update id="editBoard" parameterType="Board">
     	UPDATE board
-    	SET title=#{b_title},
-    		content=#{b_content}
-    	WHERE id=#{b_id}	
+    	SET b_title=#{bTitle},
+    		b_content=#{bContent}
+    	WHERE b_id=#{bId}	
     </update>
     
 </mapper>

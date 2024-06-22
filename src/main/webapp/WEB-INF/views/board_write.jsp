@@ -15,8 +15,8 @@
   <h2>글작성</h2>
   <form action="/board/writepro" name="board" method="post">
     <div class="mb-3 mt-3">
-       <input type="text" class="form-control" style="width:50%"  placeholder="제목" name="b_title">
-      <textarea class="form-control" style="width:50%" rows="10" id="comment" name="b_content"  placeholder="내용"></textarea>
+       <input type="text" class="form-control" style="width:50%"  placeholder="제목" name="bTitle">
+      <textarea class="form-control" style="width:50%" rows="10" id="comment" name="bContent"  placeholder="내용"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>

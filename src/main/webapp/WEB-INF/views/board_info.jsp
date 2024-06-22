@@ -17,23 +17,23 @@
 		</colgroup>
 			<tr>
 				<td>게시글 번호</td>
-				<td>${board.b_id}</td>
+				<td>${board.bId}</td>
 			</tr>
 			<tr>
 				<td>제목</td>
-				<td>${board.b_title}</td>
+				<td>${board.bTitle}</td>
 			</tr>
 			<tr>
 				<td>작성 날짜</td>
-				<td>${board.b_date}</td>
+				<td>${board.bDate}</td>
 			</tr>
 			<tr>
 				<td>내용</td>
-				<td height="300">${board.b_content}</td>
+				<td height="300">${board.bContent}</td>
 			</tr>
 	</table>
-	<a href="/board/reply?b_id=${board.b_id}&b_group=${board.b_group}&b_order=${board.b_order}&b_depth=${board.b_depth}" style="width: 10%; background-color: #818181; color: #fff;">답글</a>
-	<a href="/board/edit?b_id=${board.b_id}" style="width: 10%; background-color: #818181; color: #fff;">수정</a>
-	<a href="/board/delete?b_id=${board.b_id}" style="width: 10%; background-color: #818181; color: #fff;">삭제</a>
+	<a href="/board/reply?bId=${board.bId}&bGroup=${board.bGroup}&bOrder=${board.bOrder}&bDepth=${board.bDepth}" style="width: 10%; background-color: #818181; color: #fff;">답글</a>
+	<a href="/board/edit?bId=${board.bId}" style="width: 10%; background-color: #818181; color: #fff;">수정</a>
+	<a href="/board/delete?bId=${board.bId}" style="width: 10%; background-color: #818181; color: #fff;">삭제</a>
 </body>
 </html>

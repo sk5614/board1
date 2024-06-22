@@ -3,59 +3,56 @@ package com.boot.board.domain;
 
 public class Board {
 	
-	private int b_id;
-	private String b_title;
+	
+	private int bId;
+	private String bTitle;
 	//private String b_writer;
-	private String b_content;
-	private String b_date;
-	private int b_group;
-	private int b_order;
-	private int b_depth;
+	private String bContent;
+	private String bDate;
+	private int bGroup;
+	private int bOrder;
+	private int bDepth;
 	
-	
-	public int getB_group() {
-		return b_group;
+	public int getbId() {
+		return bId;
 	}
-	public void setB_group(int b_group) {
-		this.b_group = b_group;
+	public void setbId(int bId) {
+		this.bId = bId;
 	}
-	public int getB_order() {
-		return b_order;
+	public String getbTitle() {
+		return bTitle;
 	}
-	public void setB_order(int b_order) {
-		this.b_order = b_order;
+	public void setbTitle(String bTitle) {
+		this.bTitle = bTitle;
 	}
-	public int getB_depth() {
-		return b_depth;
+	public String getbContent() {
+		return bContent;
 	}
-	public void setB_depth(int b_depth) {
-		this.b_depth = b_depth;
+	public void setbContent(String bContent) {
+		this.bContent = bContent;
 	}
-
-	public int getB_id() {
-		return b_id;
+	public String getbDate() {
+		return bDate;
 	}
-	public void setB_id(int b_id) {
-		this.b_id = b_id;
+	public void setbDate(String bDate) {
+		this.bDate = bDate;
 	}
-	public String getB_title() {
-		return b_title;
+	public int getbGroup() {
+		return bGroup;
 	}
-	public void setB_title(String b_title) {
-		this.b_title = b_title;
+	public void setbGroup(int bGroup) {
+		this.bGroup = bGroup;
 	}
-	public String getB_content() {
-		return b_content;
+	public int getbOrder() {
+		return bOrder;
 	}
-	public void setB_content(String b_content) {
-		this.b_content = b_content;
+	public void setbOrder(int bOrder) {
+		this.bOrder = bOrder;
 	}
-	public String getB_date() {
-		return b_date;
+	public int getbDepth() {
+		return bDepth;
 	}
-	public void setB_date(String b_date) {
-		this.b_date = b_date;
+	public void setbDepth(int bDepth) {
+		this.bDepth = bDepth;
 	}
-
-	
 }

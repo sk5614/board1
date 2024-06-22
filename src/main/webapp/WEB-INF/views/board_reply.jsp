@@ -18,13 +18,13 @@
 		<h2>글작성</h2>
 		<form action="/board/replypro" name="board" method="post">
 			<div class="mb-3 mt-3">
-				<input type="hidden" name="b_group" value="${board.b_group}">
-				<input type="hidden" name="b_order" value="${board.b_order}">
-				<input type="hidden" name="b_depth" value="${board.b_depth}">
+				<input type="hidden" name="bGroup" value="${board.bGroup}">
+				<input type="hidden" name="bOrder" value="${board.bOrder}">
+				<input type="hidden" name="bDepth" value="${board.bDepth}">
 				<input type="text" class="form-control" style="width: 50%"
-					placeholder="제목" name="b_title">
+					placeholder="제목" name="bTitle">
 				<textarea class="form-control" style="width: 50%" rows="10"
-					id="comment" name="b_content" placeholder="내용"></textarea>
+					id="comment" name="bContent" placeholder="내용"></textarea>
 			</div>
 			<button type="submit" class="btn btn-primary">Submit</button>
 		</form>

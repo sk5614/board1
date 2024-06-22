@@ -13,10 +13,10 @@
 
 <div class="container mt-3">
   <h2>글작성</h2>
-  <form action="/board/editpro?b_id=${board.b_id}" name="board" method="post">
+  <form action="/board/editpro?bId=${board.bId}" name="board" method="post">
     <div class="mb-3 mt-3">
-      	<input type="text" class="form-control" style="width:50%"  value="${board.b_title}" name="b_title" >
-      <textarea class="form-control" style="width:50%" rows="10"  name="b_content"  placeholder="${board.b_content}" ></textarea>
+      	<input type="text" class="form-control" style="width:50%"  value="${board.bTitle}" name="bTitle" >
+      <textarea class="form-control" style="width:50%" rows="10"  name="bContent"  placeholder="${board.bContent}" ></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
