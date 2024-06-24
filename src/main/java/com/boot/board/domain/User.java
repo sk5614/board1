@@ -8,20 +8,53 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 
 	
+	
+	
 	private static final long serialVersionUID = 1L;
 	
 	private String username; //u_id
 	private String password; 
+	private String uName; //u_name
+	private String uDate;
+	private String uAuth;
 	
 	
 	private boolean isAccountNonExpired;
 	private boolean isAccountNonLocked;
 	private boolean isCredentialsNonExpired;
 	private boolean isEnabled;
+	private Collection<? extends GrantedAuthority> authorities;
+	
+
+	public String getuName() {
+		return uName;
+	}
+
+	public void setuName(String uName) {
+		this.uName = uName;
+	}
+
+	public String getuDate() {
+		return uDate;
+	}
+
+	public void setuDate(String uDate) {
+		this.uDate = uDate;
+	}
+
+	public String getuAuth() {
+		return uAuth;
+	}
+
+	public void setuAuth(String uAuth) {
+		this.uAuth = uAuth;
+	}
+	
+	
 	
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+	public Collection<? extends GrantedAuthority> getAuthorities() { // 사용자가 갖고 있는 권한을 반환 
+		return authorities;
 	}
 
 	@Override

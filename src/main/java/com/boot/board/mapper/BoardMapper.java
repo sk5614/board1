@@ -11,7 +11,7 @@ import java.util.List;
 public interface BoardMapper {
     
     public List<Board> selectBoardList(@Param("limit") int limit,@Param("offset") int offset);
-    
+    //mybatis 에서 변수 못찾아서 @Param 사용 
     public int countBoard();
     
     public void writeBoard(Board board);

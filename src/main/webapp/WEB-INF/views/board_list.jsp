@@ -34,34 +34,36 @@
 </div>
 <h1>Board List</h1>
 
-<div class="container mt-3">
-    <table class="table table-hover" style="width:50%">
-        <thead>
-            <tr>
-                <td style="width:5%;">ID</td>
-                <td style="width:70%;">Title</td>
-                <td style="width:25%;">Date</td>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="board" items="${boards}">
-                <tr>
-                    <td>${board.bId}</td>
-                    <td>
-                        <a href="/board/info?bId=${board.bId}">
-                            <c:forEach begin="1" end="${board.bDepth}" step="1">
-                                <span class="badge bg-secondary">RE</span>
-                            </c:forEach>
-                            ${board.bTitle}
-                        </a>
-                    </td>
-                    <td style="font-size: 0.8em;">${board.bDate}</td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
-
-    <div class="d-flex justify-content-center">
+<div class="container mt-3 ">
+	    <div class="d-flex justify-content-center">
+		    <table class="table table-hover " style="width:50%" >
+		        <thead >
+		            <tr>
+		                <th style="width:5%;">ID</th>
+		                <th style="width:70%;">Title</th>
+		                <th style="width:25%;">Date</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <c:forEach var="board" items="${boards}">
+		                <tr>
+		                    <td>${board.bId}</td>
+		                    <td>
+		                        <a href="/board/info?bId=${board.bId}">
+		                            <c:forEach begin="1" end="${board.bDepth}" step="1">
+		                                <span class="badge bg-secondary">RE</span>
+		                            </c:forEach>
+		                            ${board.bTitle}
+		                        </a>
+		                    </td>
+		                    <td style="font-size: 0.8em;">${board.bDate}</td>
+		                </tr>
+		            </c:forEach>
+		        </tbody>
+		    </table>
+		</div>
+		
+    <div class="d-flex justify-content-center mt-3">
         <nav aria-label="Page navigation">
             <ul class="pagination">
                 <c:if test="${startPage > 1}">
