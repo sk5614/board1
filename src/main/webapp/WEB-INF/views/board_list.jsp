@@ -18,7 +18,6 @@
 </head>
 <body>
 
-<div> 
     <button type="button" class="btn btn-outline-primary">홈</button>
     <button type="button" class="btn btn-outline-primary" onclick="goToList()">목록</button>
     <button type="button" class="btn btn-outline-primary" onclick="goToWrite()"> 글쓰기 </button>
@@ -31,7 +30,6 @@
             window.location.href = "/board/list";
         }
     </script>
-</div>
 <h1>Board List</h1>
 
 <div class="container mt-3 ">

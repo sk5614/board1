@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,18 +15,45 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.boot.board.domain.Board;
+import com.boot.board.domain.User;
 import com.boot.board.service.BoardService;
+import com.boot.board.service.UserService;
 
 @Controller
 public class BoardController {
 
-	@Autowired
-	BoardService boardservice;
-
+	@Autowired BoardService boardservice;
+	@Autowired UserService userservice;
+	@Autowired PasswordEncoder encoder;
+	
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
 		System.out.println("인덱스 페이지 호출");
-		return "index";
+		return "/index";
+	}
+	
+	@RequestMapping("/signUp") 
+	public String signup() {
+		return "/signup";
+	}
+	
+	@RequestMapping("/signUpPro") 
+	  public String signupPro(User user) {
+	     
+		  String encodedPassword = encoder.encode(user.getPassword());  //비밀번호 암호화
+	      
+	      user.setPassword(encodedPassword);
+	      user.setAccountNonExpired(true);
+	      user.setEnabled(true);
+	      user.setAccountNonLocked(true);
+	      user.setCredentialsNonExpired(true);
+	      user.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER")); // 유저 권한세팅 ROLE_USER auth에 저장    
+	      
+	      userservice.createUser(user);
+	      userservice.createAuthorities(user);
+	      
+	      return "/login";
 	}
 
 	@GetMapping(value = "/board/list")
