@@ -51,7 +51,7 @@ public class BoardController {
 	      user.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER")); // 유저 권한세팅 ROLE_USER auth에 저장    
 	      
 	      userservice.createUser(user);
-	      userservice.createAuthorities(user);
+	   //   userservice.createAuth(user);
 	      
 	      return "/login";
 	}

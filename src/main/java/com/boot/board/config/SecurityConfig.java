@@ -26,17 +26,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
+            .csrf().disable() 
             .authorizeRequests()
-                .antMatchers("/", "/board/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/board/userlist").authenticated() 
+                .antMatchers("/board/admin").access("hasRole('ROLE_ADMIN')") // 
+                .anyRequest().permitAll()
                 .and()
             .formLogin()
-                .loginPage("/board/index")
-                .permitAll()
+                .loginPage("/board/index")  
                 .and()
             .logout()
-                .permitAll();
+                .permitAll();   //로그아웃 기능 활성화 
         return http.build();
     }
 }

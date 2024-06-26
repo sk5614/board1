@@ -13,12 +13,12 @@ public class UserService {
 	UserMapper usermapper;
 
 	public void createUser(User user) {
-		usermapper.createuser(user);
+		usermapper.createUser(user);
 
 	}
 
-	public void createAuthorities(User user) {
-		usermapper.createAuthority(user);
+	public void createAuth(User user) {
+		usermapper.createAuth(user);
 	}
 
 }

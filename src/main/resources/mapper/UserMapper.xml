@@ -2,8 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.boot.board.mapper.UserMapper">
-
-
+	
+	<resultMap id="UserResultMap" type="com.boot.board.domain.User">
+		<id property="username" column="u_id"/>
+        <result property="password" column="u_password"/>
+        <result property="uDate" column="u_datetime"/>
+        <result property="uAuth" column="u_auth"/>
+        <result property="isAccountNonExpired" column="u_isAccountNonExpired"/>
+        <result property="isAccountNonLocked" column="u_isAccountNonLocked"/>
+        <result property="isCredentialsNonExpired" column="u_isCredentialsNonExpired"/>
+        <result property="isEnabled" column="u_isEnabled"/>
+	</resultMap>
+	
+	
+	<select id="createUser">
+		INSERT INTO user (u_id, u_password, u_name, u_isAccountNonExpired,
+		  				u_isAccountNonLocked, u_isCredentialNonExpired, u_isEnabled)
+		VALUES (#{username}, #{password} ,#{uName} , #{isAccountNonExpired}
+						 ,#{isAccountNonLocked} ,#{isCredentialsNonExpired} ,#{isEnabled})  				
+	</select>
+	
+	<select id="createuserAuth">
+	
+	</select>
 
 
 </mapper>

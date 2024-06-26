@@ -7,8 +7,8 @@ import com.boot.board.domain.User;
 @Mapper
 public interface UserMapper {
 	
-	public void createuser(User user);
+	public void createUser(User user);
 
-	public void createAuthority(User user);
+	public void createAuth(User user);
 	
 }

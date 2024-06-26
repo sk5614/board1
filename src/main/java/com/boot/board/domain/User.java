@@ -16,7 +16,6 @@ public class User implements UserDetails {
 
 	private String username; //u_id
 	private String password; 
-	private String uName; //u_name
 	private String uDate;
 	private String uAuth;
 	
@@ -27,14 +26,6 @@ public class User implements UserDetails {
 	private boolean isEnabled;
 	private Collection<? extends GrantedAuthority> authorities;
 	
-
-	public String getuName() {
-		return uName;
-	}
-
-	public void setuName(String uName) {
-		this.uName = uName;
-	}
 
 	public String getuDate() {
 		return uDate;
