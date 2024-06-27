@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,6 +32,21 @@
         }
     </script>
 <h1>Board List</h1>
+    <div>
+        <c:choose>
+            <c:when test="${not empty loggedInUser}">
+                <p>로그인 중: ${loggedInUser}</p>
+            </c:when>
+            <c:otherwise>
+                <p>로그인하지 않았습니다.</p>
+            </c:otherwise>
+        </c:choose>
+    </div>
+        <nav>
+        <form action="/logout" method="get">
+            <button type="submit">로그아웃</button>
+        </form>
+    </nav>
 
 <div class="container mt-3 ">
 	    <div class="d-flex justify-content-center">

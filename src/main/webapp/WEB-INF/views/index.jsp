@@ -23,10 +23,10 @@
 		</div>
 		
 		<div class="form-container sign-in-container">
-			<form id="signinForm" action="#">
+			<form id="signinForm" action="/signIn" method="post">
 				<h1>Sign in</h1>
-				<input type="text" placeholder="Id" />
-				<input type="password" placeholder="Password" />
+				<input type="text" name="username" placeholder="Id" />
+				<input type="password" name="password" placeholder="Password" />
 				<button>로그인</button>
 				<p id="error-id" style="color:red;display:none;">아이디 불일치</p>
 				<p id="error-password" style="color:red;display:none;">비밀번호 불일치</p>

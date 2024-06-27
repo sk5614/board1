@@ -15,8 +15,6 @@ import com.boot.board.service.UserService;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private UserService userService;
     
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,9 +31,13 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
                 .and()
             .formLogin()
-                .loginPage("/board/index")  
+                .loginPage("/board/index")
+                .defaultSuccessUrl("/board/index", true)  // 로그인 성공 시 리다이렉트할 URL 설정
+                .permitAll()
                 .and()
             .logout()
+	            .logoutUrl("/logout")
+	            .logoutSuccessUrl("/") // 로그아웃 성공 후 리디렉션할 URL
                 .permitAll();   //로그아웃 기능 활성화 
         return http.build();
     }

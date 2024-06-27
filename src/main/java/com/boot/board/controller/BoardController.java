@@ -3,6 +3,9 @@ package com.boot.board.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,12 +74,41 @@ public class BoardController {
 	}
 	
 	
+	 @PostMapping("/signIn")
+	    public String signIn(User user, Model model, HttpSession session) {
+	        if (!userservice.userExist(user.getUsername())) {
+	            model.addAttribute("error-id", "아이디 불일치");
+	            return "/index";
+	        }
+
+	        if (!userservice.passMatch(user.getUsername(), user.getPassword())) {
+	            model.addAttribute("error-password", "비밀번호 불일치");
+	            return "/index";
+	        }
+	        
+	        session.setAttribute("loggedInUser", user.getUsername());
+
+	        // 로그인 성공 시 처리 (예: 세션에 사용자 정보 저장)
+	        return "redirect:/board/list";
+	    }
 	
+	  @GetMapping("/logout")
+	    public String logout(HttpServletRequest request) {
+	        HttpSession session = request.getSession(false); // 세션이 존재하지 않으면 null 반환
+
+	        if (session != null) {
+	            session.invalidate(); // 세션 무효화
+	        }
+
+	        return "redirect:/"; // 홈 페이지로 리디렉션
+	    }
 
 	@GetMapping(value = "/board/list")
 	public String boardList(Model model, 
 			@RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            HttpSession session) {
+		String loggedInUser = (String) session.getAttribute("loggedInUser");
 		List<Board> list = boardservice.selectBoardList(page, size);
 		
         int totalBoards = boardservice.countBoard();
@@ -95,6 +128,7 @@ public class BoardController {
         model.addAttribute("endPage", endPage);  // 끝 페이지 번호
         model.addAttribute("totalPages", totalPages);  // 전체 페이지 수
         model.addAttribute("pageNumbers", pageNumbers);  // 페이지 번호 목록
+        model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
 		return "board_list";
 	}
 
