@@ -16,15 +16,20 @@
 	
 	
 	<select id="createUser">
-		INSERT INTO user (u_id, u_password, u_name, u_isAccountNonExpired,
+		INSERT INTO user (u_id, u_password, u_isAccountNonExpired,
 		  				u_isAccountNonLocked, u_isCredentialNonExpired, u_isEnabled)
-		VALUES (#{username}, #{password} ,#{uName} , #{isAccountNonExpired}
+		VALUES (#{username}, #{password}  , #{isAccountNonExpired}
 						 ,#{isAccountNonLocked} ,#{isCredentialsNonExpired} ,#{isEnabled})  				
 	</select>
 	
 	<select id="createuserAuth">
 	
 	</select>
-
+	
+	<select id="userExist" parameterType="User" resultMap="UserResultMap">
+        SELECT * 
+        FROM user 
+        WHERE u_id = #{username}
+    </select>
 
 </mapper>

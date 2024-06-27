@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,12 +36,22 @@ public class BoardController {
 		return "/index";
 	}
 	
+	
+//    @PostMapping("/checkUsername")
+//    public ResponseEntity<String> checkUsername(@RequestBody String username) {
+//        boolean exists = userservice.userExist(username);
+//        if (exists) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
+//        }
+//        return ResponseEntity.ok("Username available");
+//    }
+//	
 	@RequestMapping("/signUp") 
 	public String signup() {
 		return "/signup";
 	}
 	
-	@RequestMapping("/signUpPro") 
+	@PostMapping("/signUpPro") 
 	  public String signupPro(User user) {
 	     
 		  String encodedPassword = encoder.encode(user.getPassword());  //비밀번호 암호화
@@ -53,8 +66,11 @@ public class BoardController {
 	      userservice.createUser(user);
 	   //   userservice.createAuth(user);
 	      
-	      return "/login";
+	      return "/index";
 	}
+	
+	
+	
 
 	@GetMapping(value = "/board/list")
 	public String boardList(Model model, 

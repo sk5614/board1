@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
     <title>게시판 메인페이지 </title>
-   <link rel="stylesheet" type="text/css" href="../css/signupform.css">
+   <link rel="stylesheet" type="text/css" href="/css/signupform.css">
 </head>
 <body>
 	<h2>회원가입</h2>
@@ -13,13 +13,15 @@
 		<div class="form-container sign-up-container">
 			<form id="signupForm" action="/signUpPro" method="post">
 				<h1>Create Account</h1>
-				<input type="text" name="username" placeholder="Id" />
+				<input type="text" name="username" id="username" placeholder="Id" />
 				<input type="password" id="password" name="password" placeholder="Password" />
 				<input type="password" id="confirmPassword" placeholder="Confirm Password" />
 				<button>회원가입</button>
-				<p id="errormatch" style="color:red;display:none;">Passwords do not match!</p>
+				<p id="errormatch" style="color:red;display:none;">패스워드가 일치하지 않습니다.</p>
+				<p id="errorusername" style="color:red;display:none;">이미 존재하는 ID 입니다.</p>
 			</form>
 		</div>
+		
 		<div class="form-container sign-in-container">
 			<form id="signinForm" action="#">
 				<h1>Sign in</h1>
@@ -43,6 +45,6 @@
 			</div>
 		</div>
 	</div>
-	<script src="../js/signup.js?after"></script>
+	<script src="/js/signup.js?after"></script>
 </body>
 </html>

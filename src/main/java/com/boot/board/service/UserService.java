@@ -21,4 +21,8 @@ public class UserService {
 		usermapper.createAuth(user);
 	}
 
+    public boolean userExist(String username) {
+    	return usermapper.userExist(username) !=null;
+    }
+
 }
