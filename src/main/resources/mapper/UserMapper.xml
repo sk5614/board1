@@ -31,5 +31,5 @@
         FROM user 
         WHERE u_id = #{username}
     </select>
-
+	
 </mapper>

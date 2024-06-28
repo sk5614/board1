@@ -12,4 +12,6 @@ public interface UserMapper {
 	public void createAuth(User user);
 	
 	public User userExist(String username);
+
+	public User userExist(User user);
 }

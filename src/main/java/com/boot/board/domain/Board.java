@@ -6,7 +6,7 @@ public class Board {
 	
 	private int bId;
 	private String bTitle;
-	//private String b_writer;
+	private String bWriter;
 	private String bContent;
 	private String bDate;
 	private int bGroup;
@@ -54,5 +54,11 @@ public class Board {
 	}
 	public void setbDepth(int bDepth) {
 		this.bDepth = bDepth;
+	}
+	public String getbWriter() {
+		return bWriter;
+	}
+	public void setbWriter(String bWriter) {
+		this.bWriter = bWriter;
 	}
 }

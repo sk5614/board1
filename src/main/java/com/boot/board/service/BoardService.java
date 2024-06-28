@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.boot.board.domain.Board;
+import com.boot.board.domain.User;
 import com.boot.board.mapper.BoardMapper;
 
 @Service
@@ -46,5 +47,6 @@ public class BoardService {
 		boardmapper.replyBoard(board);
 		boardmapper.setReply(board);
 	}
+
 
 }

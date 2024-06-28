@@ -50,30 +50,18 @@
                 </colgroup>
                 <tbody>
                     <tr>
-                        <td>게시글 번호</td>
-                        <td>${board.bId}</td>
+                        <td>Username</td>
+                        <td>${user.username}</td>
                     </tr>
                     <tr>
-                        <td>작성자</td>
-                        <td>${board.bWriter}</td>
+                        <td>가입일</td>
+                        <td>${user.uDate}</td>
                     </tr>
+                    	<a href="/board/list?bWriter=${user.username}">작성글 목록</a>
                     <tr>
-                        <td>제목</td>
-                        <td>${board.bTitle}</td>
-                    </tr>
-                    <tr>
-                        <td>작성 날짜</td>
-                        <td>${board.bDate}</td>
-                    </tr>
-                    <tr>
-                        <td>내용</td>
-                        <td height="300">${board.bContent}</td>
-                    </tr>
                 </tbody>
             </table>
-            <a href="/board/reply?bId=${board.bId}&bGroup=${board.bGroup}&bOrder=${board.bOrder}&bDepth=${board.bDepth}" class="btn btn-custom">답글</a>
-            <a href="/board/edit?bId=${board.bId}" class="btn btn-custom">수정</a>
-            <a href="/board/delete?bId=${board.bId}" class="btn btn-custom">삭제</a>
+            <a href="/board/list" class="btn btn-custom">목록</a>
         </div>
     </div>
 </div>

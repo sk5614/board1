@@ -8,13 +8,14 @@
         <result property="bTitle" column="b_title"/>
         <result property="bContent" column="b_content"/>
         <result property="bDate" column="b_date"/>
+        <result property="bWriter" column="b_writer"/>
         <result property="bGroup" column="b_group"/>
         <result property="bOrder" column="b_order"/>
         <result property="bDepth" column="b_depth"/>
     </resultMap>
 
     <select id="selectBoardList" resultMap="BoardResultMap">
-	    SELECT b_id,b_title,b_content,b_date,b_group,b_order,b_depth
+	    SELECT b_id,b_title,b_content,b_date,b_writer,b_group,b_order,b_depth
 	    FROM board
 	    ORDER BY b_group DESC, b_order ASC, b_depth ASC 
 	    LIMIT #{limit} OFFSET #{offset}
@@ -25,8 +26,8 @@
 	</select>
     
     <insert id="writeBoard" >
-	    INSERT INTO board (b_title, b_content, b_date)
-	    VALUES (#{bTitle}, #{bContent}, NOW() )
+	    INSERT INTO board (b_title, b_content, b_date,b_writer)
+	    VALUES (#{bTitle}, #{bContent}, NOW(), #{bWriter} )
     </insert>
     
     <update id="setGroup" >

@@ -37,4 +37,8 @@ public class UserService {
         return passwordEncoder.matches(rawPassword, user.getPassword()); //입력 password 를 암호화 후 DB password 와 비교 
     }
 
+	public User infoUser(User user) {
+		return usermapper.userExist(user);
+	}
+
 }

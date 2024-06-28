@@ -77,12 +77,12 @@ public class BoardController {
 	 @PostMapping("/signIn")
 	    public String signIn(User user, Model model, HttpSession session) {
 	        if (!userservice.userExist(user.getUsername())) {
-	            model.addAttribute("error-id", "아이디 불일치");
+	         //   model.addAttribute("error-id", "아이디 불일치");
 	            return "/index";
 	        }
 
 	        if (!userservice.passMatch(user.getUsername(), user.getPassword())) {
-	            model.addAttribute("error-password", "비밀번호 불일치");
+	           // model.addAttribute("error-password", "비밀번호 불일치");
 	            return "/index";
 	        }
 	        
@@ -138,14 +138,17 @@ public class BoardController {
 	}
 
 	@PostMapping(value = "/board/writepro")
-	public String boardWritePro(Board board) {
+	public String boardWritePro(Board board,HttpSession session) {
+		board.setbWriter((String) session.getAttribute("loggedInUser"));
 		boardservice.writeBoard(board);
 		return "redirect:/board/list";
 	}
 
 	@GetMapping(value = "/board/info")
-	public String boardInfo(Model model, Board board) {
+	public String boardInfo(Model model, Board board,HttpSession session) {
 		model.addAttribute("board", boardservice.infoBoard(board));
+//		String loggedInUser = (String) session.getAttribute("loggedInUser");
+//		model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
 		return "board_info";
 	}
 
@@ -174,10 +177,18 @@ public class BoardController {
 	}
 
 	@PostMapping(value = "/board/replypro") // 답글
-	public String replyBoardPro(Model model, Board board) {
+	public String replyBoardPro(Model model, Board board, HttpSession session) {
 		model.addAttribute("board", boardservice.infoBoard(board));
+		board.setbWriter((String) session.getAttribute("loggedInUser"));
 		boardservice.replyBoard(board);
 		return "redirect:/board/list"; // 이전화면으로 리다이렉트
+	}
+	
+	@RequestMapping(value = "/userInfo") // 답글
+	public String userInfo(Model model, User user, HttpSession session) {
+		model.addAttribute("user", userservice.infoUser(user));
+		//board.setbWriter((String) session.getAttribute("loggedInUser"));
+		return "user-info"; // 이전화면으로 리다이렉트
 	}
 
 }
