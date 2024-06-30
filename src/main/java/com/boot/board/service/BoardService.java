@@ -47,6 +47,10 @@ public class BoardService {
 		boardmapper.replyBoard(board);
 		boardmapper.setReply(board);
 	}
-
+	
+	public int countBoardbyuser(String username) {
+		return boardmapper.countBoardbyuser(username);
+		
+	}
 
 }

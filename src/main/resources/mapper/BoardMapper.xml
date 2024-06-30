@@ -66,4 +66,10 @@
     	WHERE b_id=#{bId}	
     </update>
     
+    <select id="countBoardbyuser" resultType="int">
+		SELECT COUNT(*) 
+		FROM board
+		WHERE b_writer=#{bWriter}
+	</select>
+	
 </mapper>

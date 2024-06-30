@@ -187,6 +187,7 @@ public class BoardController {
 	@RequestMapping(value = "/userInfo") // 답글
 	public String userInfo(Model model, User user, HttpSession session) {
 		model.addAttribute("user", userservice.infoUser(user));
+		model.addAttribute("boardcount", boardservice.countBoardbyuser(user.getUsername()));
 		//board.setbWriter((String) session.getAttribute("loggedInUser"));
 		return "user-info"; // 이전화면으로 리다이렉트
 	}

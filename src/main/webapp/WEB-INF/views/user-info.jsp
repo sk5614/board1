@@ -59,6 +59,10 @@
                     </tr>
                     	<a href="/board/list?bWriter=${user.username}">작성글 목록</a>
                     <tr>
+                    <tr>
+                    	<td>작성글수</td>
+                    	<td>${boardcount} </td>
+                    </tr>
                 </tbody>
             </table>
             <a href="/board/list" class="btn btn-custom">목록</a>

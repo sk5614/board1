@@ -27,6 +27,8 @@ public interface BoardMapper {
 	public void setReply(Board board);
 
 	public void replyBoard(Board board);
+	
+	public int countBoardbyuser(String username);
 
 	
 }
