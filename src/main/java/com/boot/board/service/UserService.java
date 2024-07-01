@@ -1,9 +1,12 @@
 package com.boot.board.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.boot.board.domain.Board;
 import com.boot.board.domain.User;
 import com.boot.board.mapper.UserMapper;
 
@@ -21,8 +24,8 @@ public class UserService {
 
 	}
 
-	public void createAuth(User user) {
-		usermapper.createAuth(user);
+	public void createAuthorities(User user) {
+	    usermapper.createAuthority(user);
 	}
 
     public boolean userExist(String username) {
@@ -39,6 +42,19 @@ public class UserService {
 
 	public User infoUser(User user) {
 		return usermapper.userExist(user);
+	}
+
+	public int countUser() {
+		return usermapper.countUser();
+	}
+	
+	public List<User> userList(int page, int size) {
+		int offset = (page-1)*size;
+		return usermapper.userList(size,offset);
+	}
+	
+	public void editAuthority(User user) {
+		usermapper.editAuthority(user);
 	}
 
 }

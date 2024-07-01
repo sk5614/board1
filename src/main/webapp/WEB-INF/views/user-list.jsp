@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Board List</title>
+    <title>User List</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -18,26 +18,31 @@
         .table-custom {
             width: 70%;
             margin: auto;
+            margin-top: 20px;
         }
         /* 제목과 작성자, 날짜 열 너비 조정 */
+        .table-custom th:nth-child(1),
+        .table-custom td:nth-child(1) {
+            width: 15%;
+        }
         .table-custom th:nth-child(2),
         .table-custom td:nth-child(2) {
-            width: 65%;
+            width: 25%;
         }
         .table-custom th:nth-child(3),
         .table-custom td:nth-child(3) {
-            width: 10%;
+            width: 40%;
         }
         .table-custom th:nth-child(4),
         .table-custom td:nth-child(4) {
-            width: 25%;
+            width: 20%;
         }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Board</a>
+            <a class="navbar-brand" href="#">User</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -51,9 +56,6 @@
                     </li>
                     <li class="nav-item">
                         <button type="button" class="btn btn-outline-primary" onclick="goToWrite()">글쓰기</button>
-                    </li>
-                        <li class="nav-item">
-                        <button type="button" class="btn btn-outline-primary" onclick="goToUser()">회원목록</button>
                     </li>
                 </ul>
                 <form class="d-flex" action="/logout" method="get">
@@ -72,35 +74,31 @@
     </nav>
 
     <div class="container mt-4">
-        <h1 class="text-center">Board List</h1>
+        <h1 class="text-center">User List</h1>
         <div class="table-responsive table-custom">
             <table class="table table-hover">
                 <thead class="table-light">
                     <tr>
-                        <th style="width:5%;">ID</th>
-                        <th style="width:65%;">Title</th>
-                        <th style="width:10%;">Writer</th>
-                        <th style="width:20%;">Date</th>
+                        <th>ID</th>
+                        <th>현재권한</th>
+                        <th>권한처리</th>
+                        <th>Date</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="board" items="${boards}">
+                    <c:forEach var="user" items="${users}">
                         <tr>
-                            <td>${board.bId}</td>
                             <td>
-                                <a href="/board/info?bId=${board.bId}">
-                                    <c:forEach begin="1" end="${board.bDepth}" step="1">
-                                        <span class="badge bg-secondary">RE</span>
-                                    </c:forEach>
-                                    ${board.bTitle}
+                                <a href="/userInfo?username=${user.username}">
+                                    ${user.username}
                                 </a>
                             </td>
-							<td style="font-size: 0.8em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-							    <a href="/userInfo?username=${board.bWriter}">
-							        ${board.bWriter}
-							    </a>
-							</td>
-                            <td style="font-size: 0.8em;">${board.bDate}</td>
+                            <td class="auth">${user.uAuth}</td>
+                            <td><button class="btn btn-sm btn-primary" onclick="changeAuthority('${user.username}', '${user.uAuth}', this)">
+                                    관리자 권한 변경
+                                </button>
+                            </td>
+                            <td style="font-size: 0.8em;">${user.uDate}</td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -112,7 +110,7 @@
                 <ul class="pagination">
                     <c:if test="${startPage > 1}">
                         <li class="page-item">
-                            <a class="page-link" href="/board/list?page=${startPage - 1}&size=${size}" aria-label="Previous">
+                            <a class="page-link" href="/user/list?page=${startPage - 1}&size=${size}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo; Previous</span>
                             </a>
                         </li>
@@ -127,7 +125,7 @@
                             </c:when>
                             <c:otherwise>
                                 <li class="page-item">
-                                    <a class="page-link" href="/board/list?page=${pageNum}&size=${size}">${pageNum}</a>
+                                    <a class="page-link" href="/user/list?page=${pageNum}&size=${size}">${pageNum}</a>
                                 </li>
                             </c:otherwise>
                         </c:choose>
@@ -135,7 +133,7 @@
 
                     <c:if test="${endPage < totalPages}">
                         <li class="page-item">
-                            <a class="page-link" href="/board/list?page=${endPage + 1}&size=${size}" aria-label="Next">
+                            <a class="page-link" href="/user/list?page=${endPage + 1}&size=${size}" aria-label="Next">
                                 <span aria-hidden="true">Next &raquo;</span>
                             </a>
                         </li>
@@ -146,6 +144,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>
         function goToWrite() {
             window.location.href = "/board/write";
@@ -153,9 +152,26 @@
         function goToList() {
             window.location.href = "/board/list";
         }
-        function goToUser() {
-            window.location.href = "/user/list";
+        function changeAuthority(username, currentAuth, buttonElement) {
+            let newAuth = currentAuth === 'ROLE_ADMIN' ? 'ROLE_USER' : 'ROLE_ADMIN';
+
+            $.ajax({
+                url: '/user/edit',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ username: username, uAuth: newAuth }),
+                success: function() {
+                    // 성공적으로 업데이트되면 전체 테이블을 다시 불러와서 화면을 업데이트합니다.
+                    $.get('/user/list', function(data) {
+                        $('.table-custom tbody').html($(data).find('.table-custom tbody').html());
+                    });
+                },
+                error: function() {
+                    console.error('권한 변경 중 오류가 발생했습니다.');
+                }
+            });
         }
+
     </script>
 </body>
 </html>

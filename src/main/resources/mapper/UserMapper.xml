@@ -22,9 +22,18 @@
 						 ,#{isAccountNonLocked} ,#{isCredentialsNonExpired} ,#{isEnabled})  				
 	</select>
 	
-	<select id="createuserAuth">
-	
-	</select>
+	<insert id="createAuthority" parameterType="org.springframework.security.core.GrantedAuthority">
+	   INSERT INTO auth (
+	      u_id,
+	      u_auth
+	   ) VALUES
+	     <foreach item="authority" index="index" collection="authorities" separator=",">
+	        (#{username}, #{authority.role})
+	     </foreach>
+	     ON DUPLICATE KEY
+	     UPDATE
+	        u_id = #{username}
+	</insert>
 	
 	<select id="userExist" parameterType="User" resultMap="UserResultMap">
         SELECT * 
@@ -32,6 +41,29 @@
         WHERE u_id = #{username}
     </select>
 	
+	<select id="countUser" resultType="int">
+		SELECT COUNT(*) 
+		FROM user
+	</select>
 	
-	
+	<select id="userList" resultMap="UserResultMap">
+	    SELECT u.u_id, u.u_password, a.u_auth, u.u_datetime
+	    FROM user u
+	    LEFT JOIN auth a ON u.u_id = a.u_id
+	    ORDER BY u.u_datetime DESC
+	    LIMIT #{limit} OFFSET #{offset}
+    </select>
+    
+    <delete id="deleteUser">
+    	DELETE 
+    	FROM user 
+    	WHERE u_id=#{username}
+    </delete>
+    
+	<update id="editAuthority" parameterType="User">
+	   	UPDATE auth
+	   	SET u_auth = #{uAuth}
+	   	WHERE u_id=#{username}
+	</update>   
+    
 </mapper>

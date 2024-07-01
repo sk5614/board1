@@ -26,13 +26,13 @@ public class SecurityConfig {
         http
             .csrf().disable() 
             .authorizeRequests()
-                .antMatchers("/board/userlist").authenticated() 
-                .antMatchers("/board/admin").access("hasRole('ROLE_ADMIN')") // 
+                .antMatchers("/board/").authenticated() 
+                .antMatchers("/user/").access("hasRole('ROLE_ADMIN')") // 
                 .anyRequest().permitAll()
                 .and()
             .formLogin()
-                .loginPage("/board/index")
-                .defaultSuccessUrl("/board/index", true)  // 로그인 성공 시 리다이렉트할 URL 설정
+                .loginPage("/")
+                .defaultSuccessUrl("/board/list", true)  // 로그인 성공 시 리다이렉트할 URL 설정
                 .permitAll()
                 .and()
             .logout()

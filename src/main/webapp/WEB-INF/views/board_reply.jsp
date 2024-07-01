@@ -60,7 +60,7 @@
 <div class="container mt-5">
   <div class="form-container">
     <h2 class="form-title">답글작성</h2>
-    <form action="/board/writepro" name="board" method="post">
+    <form action="/board/replypro" name="board" method="post">
     	<input type="hidden" name="bGroup" value="${board.bGroup}">
         <input type="hidden" name="bOrder" value="${board.bOrder}">
         <input type="hidden" name="bDepth" value="${board.bDepth}">

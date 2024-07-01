@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -20,6 +21,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.boot.board.domain.Board;
 import com.boot.board.domain.User;
@@ -68,7 +73,7 @@ public class BoardController {
 	      user.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER")); // 유저 권한세팅 ROLE_USER auth에 저장    
 	      
 	      userservice.createUser(user);
-	   //   userservice.createAuth(user);
+	      userservice.createAuthorities(user);
 	      
 	      return "/index";
 	}
@@ -88,7 +93,6 @@ public class BoardController {
 	        
 	        session.setAttribute("loggedInUser", user.getUsername());
 
-	        // 로그인 성공 시 처리 (예: 세션에 사용자 정보 저장)
 	        return "redirect:/board/list";
 	    }
 	
@@ -191,5 +195,86 @@ public class BoardController {
 		//board.setbWriter((String) session.getAttribute("loggedInUser"));
 		return "user-info"; // 이전화면으로 리다이렉트
 	}
+	
+	@GetMapping(value = "/user/list")
+	public String userList(Model model, 
+			@RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            HttpSession session) {
+		String loggedInUser = (String) session.getAttribute("loggedInUser");
+		List<User> list = userservice.userList(page, size);
+		
+        int totalBoards = userservice.countUser();
+        int totalPages = (int) Math.ceil((double) totalBoards / size);
 
+        int startPage = Math.max(1, page - 4);
+        int endPage = Math.min(startPage + 5, totalPages);
+
+        List<Integer> pageNumbers = new ArrayList<>();
+        for (int i = startPage; i <= endPage; i++) {
+            pageNumbers.add(i);
+        }
+        model.addAttribute("users", list);
+        model.addAttribute("size", size);
+        model.addAttribute("nowPage", page);  // 현재 페이지 번호
+        model.addAttribute("startPage", startPage);  // 시작 페이지 번호
+        model.addAttribute("endPage", endPage);  // 끝 페이지 번호
+        model.addAttribute("totalPages", totalPages);  // 전체 페이지 수
+        model.addAttribute("pageNumbers", pageNumbers);  // 페이지 번호 목록
+        model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
+		return "user-list";
+	}
+	
+	@PostMapping(value = "/user/edit")
+	@ResponseBody
+	public String userEdit(@RequestBody  User user) {
+		userservice.editAuthority(user);
+		  return "success";
+	}
+	
+	
+	
+	
+	  String apiUrl = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst"; // API 엔드포인트 경로 추가
+      String serviceKey = "m%2BxUA%2FWqAxyZ09zpr%2BhIrUZg9tM982bvlDNyq8yei8JrK4MawLu8GqvpJwjQLl5VNH5I03uk%2BOO4EJEinHCjOQ%3D%3D"; // U
+	
+
+      @Autowired
+      private RestTemplate restTemplate;
+
+      @GetMapping("/current")
+      public String getCurrentWeather(Model model) {
+          try {
+              // API 호출을 위한 매개변수 설정
+              UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                      .queryParam("serviceKey", serviceKey)
+                      .queryParam("dataType", "JSON")
+                      .queryParam("base_date", "20220101")
+                      .queryParam("base_time", "0500")
+                      .queryParam("nx", "60")
+                      .queryParam("ny", "127");
+
+              // API 호출 및 응답 받기
+              ResponseEntity<String> response = restTemplate.getForEntity(
+                      builder.toUriString(), String.class);
+
+              // API 응답 데이터 처리
+              if (response.getStatusCode() == HttpStatus.OK) {
+                  // API 응답 데이터를 모델에 추가
+                  model.addAttribute("weatherData", response.getBody());
+                  return "whether"; // whether.jsp 파일의 경로와 이름
+              } else {
+                  model.addAttribute("error", "Failed to fetch weather data");
+                  return "error"; // 에러 페이지로 이동
+              }
+          } catch (HttpServerErrorException e) {
+              model.addAttribute("error", "Internal Server Error: " + e.getMessage());
+              return "error"; // 에러 페이지로 이동
+          }
+      }
+	
+	
+	
+	
+	
 }
