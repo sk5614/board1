@@ -152,25 +152,34 @@
         function goToList() {
             window.location.href = "/board/list";
         }
-        function changeAuthority(username, currentAuth, buttonElement) {
-            let newAuth = currentAuth === 'ROLE_ADMIN' ? 'ROLE_USER' : 'ROLE_ADMIN';
+        let pageInfo = {
+                page: ${nowPage}, // 현재 페이지 번호
+                size: ${size} // 페이지 사이즈
+            };
 
-            $.ajax({
-                url: '/user/edit',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ username: username, uAuth: newAuth }),
-                success: function() {
-                    // 성공적으로 업데이트되면 전체 테이블을 다시 불러와서 화면을 업데이트합니다.
-                    $.get('/user/list', function(data) {
-                        $('.table-custom tbody').html($(data).find('.table-custom tbody').html());
-                    });
-                },
-                error: function() {
-                    console.error('권한 변경 중 오류가 발생했습니다.');
-                }
-            });
-        }
+        	function changeAuthority(username, currentAuth, buttonElement) {
+        	    let newAuth = currentAuth === 'ROLE_ADMIN' ? 'ROLE_USER' : 'ROLE_ADMIN';
+
+        	    $.ajax({
+        	        url: '/user/edit',
+        	        type: 'POST',
+        	        contentType: 'application/json',
+        	        data: JSON.stringify({ 
+        	            username: username, 
+        	            uAuth: newAuth,
+        	            pageInfo: pageInfo // 초기 페이지 정보 전송
+        	        }),
+        	        success: function() {
+        	            // 성공적으로 업데이트되면 현재 페이지 정보를 기반으로 데이터 다시 로드
+        	            $.get('/user/list?page=' + pageInfo.page + '&size=' + pageInfo.size, function(data) {
+        	                $('.table-custom tbody').html($(data).find('.table-custom tbody').html());
+        	            });
+        	        },
+        	        error: function() {
+        	            console.error('권한 변경 중 오류가 발생했습니다.');
+        	        }
+        	    });
+        	}
 
     </script>
 </body>

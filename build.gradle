@@ -37,6 +37,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator' //actuator (모니터링)
 	implementation "io.micrometer:micrometer-registry-prometheus"
 	
+	
 	testCompileOnly 'org.projectlombok:lombok:1.18.24' // 테스트 환경에서 주입
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24' // 테스트환경의 어노테이션 주입
 	

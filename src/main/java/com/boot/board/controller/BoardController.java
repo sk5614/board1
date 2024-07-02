@@ -1,10 +1,23 @@
 package com.boot.board.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -30,10 +43,15 @@ import com.boot.board.domain.Board;
 import com.boot.board.domain.User;
 import com.boot.board.service.BoardService;
 import com.boot.board.service.UserService;
+import com.boot.board.util.Utils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @Controller
 public class BoardController {
-
+	
+    @Autowired Utils util;
 	@Autowired BoardService boardservice;
 	@Autowired UserService userservice;
 	@Autowired PasswordEncoder encoder;
@@ -234,47 +252,60 @@ public class BoardController {
 	
 	
 	
+	 
 	
-	  String apiUrl = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst"; // API 엔드포인트 경로 추가
-      String serviceKey = "m%2BxUA%2FWqAxyZ09zpr%2BhIrUZg9tM982bvlDNyq8yei8JrK4MawLu8GqvpJwjQLl5VNH5I03uk%2BOO4EJEinHCjOQ%3D%3D"; // U
-	
+	@Autowired
+    private RestTemplate restTemplate;
+	@GetMapping("/weather")
+    public String getCurrentWeather(Model model) throws IOException {
+        String serviceKey = "7c7cfda23137e9e1d136e8ca5d565cc5";
+        String apiUrl = "https://api.openweathermap.org/data/2.5/weather";
+        String lat = "35.8722";
+        String lon = "128.6025";
 
-      @Autowired
-      private RestTemplate restTemplate;
+        // URI 생성
+        String finalUri = String.format("%s?lat=%s&lon=%s&appid=%s", apiUrl, lat, lon, serviceKey);
 
-      @GetMapping("/current")
-      public String getCurrentWeather(Model model) {
-          try {
-              // API 호출을 위한 매개변수 설정
-              UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                      .queryParam("serviceKey", serviceKey)
-                      .queryParam("dataType", "JSON")
-                      .queryParam("base_date", "20220101")
-                      .queryParam("base_time", "0500")
-                      .queryParam("nx", "60")
-                      .queryParam("ny", "127");
+        // API 호출 및 응답 받기
+        ResponseEntity<String> response = restTemplate.getForEntity(finalUri, String.class);
 
-              // API 호출 및 응답 받기
-              ResponseEntity<String> response = restTemplate.getForEntity(
-                      builder.toUriString(), String.class);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            String responseBody = response.getBody();
 
-              // API 응답 데이터 처리
-              if (response.getStatusCode() == HttpStatus.OK) {
-                  // API 응답 데이터를 모델에 추가
-                  model.addAttribute("weatherData", response.getBody());
-                  return "whether"; // whether.jsp 파일의 경로와 이름
-              } else {
-                  model.addAttribute("error", "Failed to fetch weather data");
-                  return "error"; // 에러 페이지로 이동
-              }
-          } catch (HttpServerErrorException e) {
-              model.addAttribute("error", "Internal Server Error: " + e.getMessage());
-              return "error"; // 에러 페이지로 이동
-          }
-      }
-	
-	
-	
-	
-	
+            // JSON 데이터를 Map으로 변환하여 모델에 추가
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Object> weatherData = objectMapper.readValue(responseBody, new TypeReference<Map<String, Object>>() {});
+
+            // Unix 타임스탬프는 Integer로 제공될 수 있으므로 Long으로 변환
+            Long sunriseTimestamp = ((Integer) ((Map<String, Object>) weatherData.get("sys")).get("sunrise")).longValue() * 1000;
+            Long sunsetTimestamp = ((Integer) ((Map<String, Object>) weatherData.get("sys")).get("sunset")).longValue() * 1000;
+
+            Date sunriseDate = new Date(sunriseTimestamp);
+            Date sunsetDate = new Date(sunsetTimestamp);
+            
+            double temp = ((Double) ((Map<String, Object>) weatherData.get("main")).get("temp")).doubleValue();
+            double feels_like = ((Double) ((Map<String, Object>) weatherData.get("main")).get("feels_like")).doubleValue();
+            double temp_min = ((Double) ((Map<String, Object>) weatherData.get("main")).get("temp_min")).doubleValue();
+            double temp_max = ((Double) ((Map<String, Object>) weatherData.get("main")).get("temp_max")).doubleValue();
+            
+            model.addAttribute("temp",util.convertTemp(temp));
+            model.addAttribute("feels_like",util.convertTemp(feels_like));
+            model.addAttribute("temp_min", util.convertTemp(temp_min));
+            model.addAttribute("temp_max",util.convertTemp(temp_max));
+         
+            model.addAttribute("weatherData", weatherData);
+            model.addAttribute("sunriseDate", sunriseDate);
+            model.addAttribute("sunsetDate", sunsetDate);
+
+            return "weather"; // weather.jsp와 같은 뷰 이름 리턴
+        } else {
+            return "error"; // 오류 페이지로 리다이렉트 또는 오류 메시지 반환
+        }
+	}
+    	  
 }
+	
+	
+	
+	
+	

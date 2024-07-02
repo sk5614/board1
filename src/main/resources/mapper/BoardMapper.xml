@@ -21,6 +21,13 @@
 	    LIMIT #{limit} OFFSET #{offset}
     </select>
     
+    <select id="searchBoardList" resultMap="BoardResultMap">
+	    SELECT b_id,b_title,b_content,b_date,b_writer,b_group,b_order,b_depth
+	    FROM board
+	    ORDER BY b_group DESC, b_order ASC, b_depth ASC 
+	    LIMIT #{limit} OFFSET #{offset}
+    </select>
+    
     <select id="countBoard" resultType="int">
 		SELECT COUNT(*) FROM board
 	</select>
