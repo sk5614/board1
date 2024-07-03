@@ -79,5 +79,57 @@
 		WHERE b_writer=#{bWriter}
 	</select>
 	
+	<select id="searchBoard" resultMap="BoardResultMap">
+	    SELECT b_id, b_title, b_content, b_date, b_writer, b_group, b_order, b_depth
+	    FROM board
+	    <where>
+	        <if test="search.keyword != null and search.keyword != ''">
+	            <choose>
+	                <when test="search.searchType == 'title'">
+	                    b_title LIKE CONCAT('%', #{search.keyword}, '%')
+	                </when>
+	                <when test="search.searchType == 'content'">
+	                    b_content LIKE CONCAT('%', #{search.keyword}, '%')
+	                </when>
+	                <when test="search.searchType == 'writer'">
+	                    b_writer LIKE CONCAT('%', #{search.keyword}, '%')
+	                </when>
+	                <otherwise>
+	                    (b_title LIKE CONCAT('%', #{search.keyword}, '%')
+	                    OR b_content LIKE CONCAT('%', #{search.keyword}, '%')
+	                    OR b_writer LIKE CONCAT('%', #{search.keyword}, '%'))
+	                </otherwise>
+	            </choose>
+	        </if>
+	    </where>
+	    ORDER BY b_group DESC, b_order ASC, b_depth ASC
+	    LIMIT #{limit} OFFSET #{offset}
+	</select>
+	
+	<select id="countSearchBoard" resultType="int">
+	    SELECT COUNT(*)
+	    FROM board
+	    <where>
+	        <if test="search.keyword != null and search.keyword != ''">
+	            <choose>
+	                <when test="search.searchType == 'title'">
+	                    b_title LIKE CONCAT('%', #{search.keyword}, '%')
+	                </when>
+	                <when test="search.searchType == 'content'">
+	                    b_content LIKE CONCAT('%', #{search.keyword}, '%')
+	                </when>
+	                <when test="search.searchType == 'writer'">
+	                    b_writer LIKE CONCAT('%', #{search.keyword}, '%')
+	                </when>
+	                <otherwise>
+	                    (b_title LIKE CONCAT('%', #{search.keyword}, '%')
+	                    OR b_content LIKE CONCAT('%', #{search.keyword}, '%')
+	                    OR b_writer LIKE CONCAT('%', #{search.keyword}, '%'))
+	                </otherwise>
+	            </choose>
+	        </if>
+	    </where>
+	</select>
+
 	
 </mapper>

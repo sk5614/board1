@@ -40,9 +40,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.boot.board.domain.Board;
+import com.boot.board.domain.Search;
 import com.boot.board.domain.User;
 import com.boot.board.service.BoardService;
 import com.boot.board.service.UserService;
+import com.boot.board.service.WeatherService;
 import com.boot.board.util.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,6 +57,7 @@ public class BoardController {
 	@Autowired BoardService boardservice;
 	@Autowired UserService userservice;
 	@Autowired PasswordEncoder encoder;
+	@Autowired WeatherService weatherService;
 	
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -153,7 +156,44 @@ public class BoardController {
         model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
 		return "board_list";
 	}
+	
+	
+	@GetMapping(value = "/board/search")
+	public String boardSearch(Model model, 
+			@RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            HttpSession session, Search search) throws IOException {
+		
+        String lat = "35.8722";
+        String lon = "128.6025";
 
+	    Map<String, Object> weatherData = weatherService.getCurrentWeather(lat, lon);
+	    model.addAttribute("weatherData", weatherData);
+		
+		String loggedInUser = (String) session.getAttribute("loggedInUser");
+		List<Board> list = boardservice.searchBoard(page, size, search);
+		
+        int totalBoards = boardservice.countSearchBoard(search);
+        int totalPages = (int) Math.ceil((double) totalBoards / size);
+
+        int startPage = Math.max(1, page - 4);
+        int endPage = Math.min(startPage + 5, totalPages);
+
+        List<Integer> pageNumbers = new ArrayList<>();
+        for (int i = startPage; i <= endPage; i++) {
+            pageNumbers.add(i);
+        }
+        model.addAttribute("boards", list);
+        model.addAttribute("size", size);
+        model.addAttribute("nowPage", page);  // 현재 페이지 번호
+        model.addAttribute("startPage", startPage);  // 시작 페이지 번호
+        model.addAttribute("endPage", endPage);  // 끝 페이지 번호
+        model.addAttribute("totalPages", totalPages);  // 전체 페이지 수
+        model.addAttribute("pageNumbers", pageNumbers);  // 페이지 번호 목록
+        model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
+		return "temp";
+	}
+	
 	@GetMapping(value = "/board/write")
 	public String boardWrite() {
 		return "board_write";

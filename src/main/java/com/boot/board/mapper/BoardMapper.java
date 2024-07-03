@@ -2,6 +2,8 @@ package com.boot.board.mapper;
 
 
 import com.boot.board.domain.Board;
+import com.boot.board.domain.Search;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,6 +31,9 @@ public interface BoardMapper {
 	public void replyBoard(Board board);
 	
 	public int countBoardbyuser(String username);
-
+	
+	public List<Board> searchBoard(@Param("limit") int limit,@Param("offset") int offset, @Param("search") Search search);
+	
+	public int countSearchBoard(@Param("search") Search search);
 	
 }

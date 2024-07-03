@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.boot.board.domain.Board;
+import com.boot.board.domain.Search;
 import com.boot.board.domain.User;
 import com.boot.board.mapper.BoardMapper;
 
@@ -53,4 +54,12 @@ public class BoardService {
 		
 	}
 
+	public int countSearchBoard(Search search) {
+		return boardmapper.countSearchBoard(search);
+	}
+	
+	public List<Board> searchBoard(int page, int size, Search search) {
+		int offset = (page-1)*size;
+		return boardmapper.searchBoard(size,offset,search);
+	}
 }
