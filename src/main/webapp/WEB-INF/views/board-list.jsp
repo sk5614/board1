@@ -236,7 +236,7 @@
             window.location.href = "/board/write";
         }
         function goToList() {
-            window.location.href = "/board/list";
+            window.location.href = "/board/search";
         }
         function goToUser() {
             window.location.href = "/user/list";
