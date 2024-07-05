@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,8 +74,12 @@
                 </tbody>
             </table>
             <a href="/board/reply?bId=${board.bId}&bGroup=${board.bGroup}&bOrder=${board.bOrder}&bDepth=${board.bDepth}" class="btn btn-custom">답글</a>
-            <a href="/board/edit?bId=${board.bId}" class="btn btn-custom">수정</a>
-            <a href="/board/delete?bId=${board.bId}" class="btn btn-custom">삭제</a>
+			<c:choose>
+			    <c:when test="${board.bWriter == loggedInUser || userAuth == 'ROLE_ADMIN'}">
+			        <a href="/board/edit?bId=${board.bId}" class="btn btn-custom">수정</a>
+			        <a href="/board/delete?bId=${board.bId}" class="btn btn-custom">삭제</a>
+			    </c:when>
+			</c:choose>
             <a href="/board/search" class="btn btn-custom">목록</a>
             
         </div>

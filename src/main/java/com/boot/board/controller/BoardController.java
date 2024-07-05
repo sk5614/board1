@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -104,18 +105,19 @@ public class BoardController {
 	
 	 @PostMapping("/signIn")
 	    public String signIn(User user, Model model, HttpSession session) {
-	        if (!userservice.userExist(user.getUsername())) {
-	         //   model.addAttribute("error-id", "아이디 불일치");
+
+		 	if (!userservice.userExist(user.getUsername())) {
 	            return "/index";
 	        }
 
 	        if (!userservice.passMatch(user.getUsername(), user.getPassword())) {
-	           // model.addAttribute("error-password", "비밀번호 불일치");
 	            return "/index";
 	        }
 	        
+		 	User userexist= userservice.infoUser(user);
 	        session.setAttribute("loggedInUser", user.getUsername());
-
+	        session.setAttribute("userAuth", userexist.getuAuth());
+	        
 	        return "redirect:/board/search";
 	    }
 	
@@ -130,34 +132,34 @@ public class BoardController {
 	        return "redirect:/"; // 홈 페이지로 리디렉션
 	    }
 
-	@GetMapping(value = "/board/list")
-	public String boardList(Model model, 
-			@RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
-            HttpSession session) {
-		String loggedInUser = (String) session.getAttribute("loggedInUser");
-		List<Board> list = boardservice.selectBoardList(page, size);
-		
-        int totalBoards = boardservice.countBoard();
-        int totalPages = (int) Math.ceil((double) totalBoards / size);
-
-        int startPage = Math.max(1, page - 4);
-        int endPage = Math.min(startPage + 5, totalPages);
-
-        List<Integer> pageNumbers = new ArrayList<>();
-        for (int i = startPage; i <= endPage; i++) {
-            pageNumbers.add(i);
-        }
-        model.addAttribute("boards", list);
-        model.addAttribute("size", size);
-        model.addAttribute("nowPage", page);  // 현재 페이지 번호
-        model.addAttribute("startPage", startPage);  // 시작 페이지 번호
-        model.addAttribute("endPage", endPage);  // 끝 페이지 번호
-        model.addAttribute("totalPages", totalPages);  // 전체 페이지 수
-        model.addAttribute("pageNumbers", pageNumbers);  // 페이지 번호 목록
-        model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
-		return "board_list";
-	}
+//	@GetMapping(value = "/board/list")   
+//	public String boardList(Model model, 
+//			@RequestParam(defaultValue = "1") int page,
+//            @RequestParam(defaultValue = "10") int size,
+//            HttpSession session) {
+//		String loggedInUser = (String) session.getAttribute("loggedInUser");
+//		List<Board> list = boardservice.selectBoardList(page, size);
+//		
+//        int totalBoards = boardservice.countBoard();
+//        int totalPages = (int) Math.ceil((double) totalBoards / size);
+//
+//        int startPage = Math.max(1, page - 4);
+//        int endPage = Math.min(startPage + 5, totalPages);
+//
+//        List<Integer> pageNumbers = new ArrayList<>();
+//        for (int i = startPage; i <= endPage; i++) {
+//            pageNumbers.add(i);
+//        }
+//        model.addAttribute("boards", list);
+//        model.addAttribute("size", size);
+//        model.addAttribute("nowPage", page);  // 현재 페이지 번호
+//        model.addAttribute("startPage", startPage);  // 시작 페이지 번호
+//        model.addAttribute("endPage", endPage);  // 끝 페이지 번호
+//        model.addAttribute("totalPages", totalPages);  // 전체 페이지 수
+//        model.addAttribute("pageNumbers", pageNumbers);  // 페이지 번호 목록
+//        model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
+//		return "board_list";
+//	}
 	
 	
 	@GetMapping(value = "/board/search")
@@ -173,7 +175,9 @@ public class BoardController {
 	    model.addAttribute("weatherData", weatherData);
 		
 		String loggedInUser = (String) session.getAttribute("loggedInUser");
+		String userAuth = (String) session.getAttribute("userAuth");
 		List<Board> list = boardservice.searchBoard(page, size, search);
+		
 		
         int totalBoards = boardservice.countSearchBoard(search);
         int totalPages = (int) Math.ceil((double) totalBoards / size);
@@ -193,6 +197,7 @@ public class BoardController {
         model.addAttribute("totalPages", totalPages);  // 전체 페이지 수
         model.addAttribute("pageNumbers", pageNumbers);  // 페이지 번호 목록
         model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
+        model.addAttribute("userAuth", userAuth); // 접속중인 유저 id 
 		return "board-list";
 	}
 	
@@ -210,10 +215,12 @@ public class BoardController {
 
 	@GetMapping(value = "/board/info")
 	public String boardInfo(Model model, Board board,HttpSession session) {
+		String loggedInUser = (String) session.getAttribute("loggedInUser");
+		String userAuth = (String) session.getAttribute("userAuth");
 		model.addAttribute("board", boardservice.infoBoard(board));
-//		String loggedInUser = (String) session.getAttribute("loggedInUser");
-//		model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
-		return "board_info";
+		model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
+	    model.addAttribute("userAuth", userAuth); 
+		return "board-info";
 	}
 
 	@RequestMapping(value = "/board/delete")
@@ -237,7 +244,7 @@ public class BoardController {
 	@GetMapping(value = "/board/reply")
 	public String boardReply(Model model, Board board) {
 		model.addAttribute("board", boardservice.infoBoard(board));
-		return "/board_reply";
+		return "board_reply";
 	}
 
 	@PostMapping(value = "/board/replypro") // 답글
@@ -248,6 +255,7 @@ public class BoardController {
 		return "redirect:/board/search"; // 이전화면으로 리다이렉트
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@GetMapping(value = "/userInfo") // 답글
 	public String userInfo(Model model, User user, HttpSession session) {
 		model.addAttribute("user", userservice.infoUser(user));
@@ -256,12 +264,20 @@ public class BoardController {
 		return "user-info"; // 이전화면으로 리다이렉트
 	}
 	
+	
+	@Secured({"ROLE_ADMIN"})
 	@GetMapping(value = "/user/list")
 	public String userList(Model model, 
 			@RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             HttpSession session) {
 		String loggedInUser = (String) session.getAttribute("loggedInUser");
+	    String userAuth = (String) session.getAttribute("userAuth");
+	    if (!"ROLE_ADMIN".equals(userAuth)) {
+	        return "redirect:/board/search"; 
+	    }
+		
+		
 		List<User> list = userservice.userList(page, size);
 		
         int totalBoards = userservice.countUser();

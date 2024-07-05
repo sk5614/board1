@@ -27,7 +27,6 @@ public class SecurityConfig {
             .csrf().disable() 
             .authorizeRequests()
                 .antMatchers("/board/").authenticated() 
-                .antMatchers("/user/").access("hasRole('ROLE_ADMIN')") // 
                 .anyRequest().permitAll()
                 .and()
             .formLogin()

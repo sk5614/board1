@@ -37,8 +37,9 @@
 	
 	<select id="userExist" parameterType="User" resultMap="UserResultMap">
         SELECT * 
-        FROM user 
-        WHERE u_id = #{username}
+        FROM user u
+		INNER JOIN auth a ON u.u_id=a.u_id
+        WHERE a.u_id = #{username}
     </select>
 	
 	<select id="countUser" resultType="int">
@@ -47,11 +48,16 @@
 	</select>
 	
 	<select id="userList" resultMap="UserResultMap">
-	    SELECT u.u_id, u.u_password, a.u_auth, u.u_datetime
-	    FROM user u
-	    LEFT JOIN auth a ON u.u_id = a.u_id
-	    ORDER BY u.u_datetime DESC
-	    LIMIT #{limit} OFFSET #{offset}
+		SELECT u.u_id, u.u_password, a.u_auth, u.u_datetime
+		FROM user u
+		LEFT JOIN auth a ON u.u_id = a.u_id
+		ORDER BY 
+		    CASE 
+		        WHEN a.u_auth = 'ROLE_ADMIN' THEN 1
+		        ELSE 2
+		    END, 
+		    u.u_datetime DESC
+		LIMIT #{limit} OFFSET #{offset};
     </select>
     
     <delete id="deleteUser">

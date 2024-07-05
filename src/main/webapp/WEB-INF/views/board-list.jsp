@@ -88,7 +88,7 @@
                         <button type="button" class="btn btn-outline-primary" onclick="goToWrite()">글쓰기</button>
                     </li>
                     <li class="nav-item">
-                        <button type="button" class="btn btn-outline-primary" onclick="goToUser()">회원목록</button>
+                        <button id="userListButton" type="button" class="btn btn-outline-primary" onclick="goToUser()">회원목록</button>
                     </li>
                 </ul>
                 <form class="d-flex" action="/logout" method="get">
@@ -241,6 +241,16 @@
         function goToUser() {
             window.location.href = "/user/list";
         }
+        
+        function checkUserRole() {
+        	var userAuth = "${userAuth}";
+            if (userAuth !== 'ROLE_ADMIN') {
+                document.getElementById('userListButton').style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', checkUserRole);
+        
     </script>
 </body>
 </html>

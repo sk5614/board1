@@ -49,9 +49,9 @@
     </insert>
 	
 	<update id="setReply" parameterType="Board">
-		UPDATE board 
-		SET b_order=b_order+1 
-		WHERE b_group=#{bGroup} and b_order>#{bOrder} and b_id!=LAST_INSERT_id() 
+	    UPDATE board 
+	    SET b_order = b_order + 1 
+	    WHERE b_group = #{bGroup} AND b_order > #{bOrder}
 	</update>
 	
     <select id="infoBoard" parameterType="Board" resultMap="BoardResultMap">

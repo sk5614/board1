@@ -21,7 +21,6 @@
 				<p id="errorusername" style="color:red;display:none;">이미 존재하는 ID 입니다.</p>
 			</form>
 		</div>
-		
 		<div class="form-container sign-in-container">
 			<form id="signinForm" action="/signIn" method="post">
 				<h1>Sign in</h1>
