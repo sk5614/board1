@@ -10,6 +10,7 @@ signInButton.addEventListener('click', () => {
   container.classList.remove("right-panel-active");
 });
 
+
 document.addEventListener('DOMContentLoaded', function () {
    const signupForm = document.getElementById('signupForm');
     const checkUsernameForm = document.getElementById('checkUsernameForm');
@@ -32,7 +33,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     
     
-     checkUsernameForm.addEventListener('submit', function (e) {
+    
+    
+    
+  /*   checkUsernameForm.addEventListener('submit', function (e) {
         e.preventDefault(); // 폼 기본 제출 동작 막기
 
         fetch('/checkUsername', {
@@ -53,6 +57,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error checking username:', error);
             // 오류 처리
         });
-    });
+    });*/
 });
 

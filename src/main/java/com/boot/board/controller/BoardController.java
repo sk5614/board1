@@ -107,11 +107,13 @@ public class BoardController {
 	    public String signIn(User user, Model model, HttpSession session) {
 
 		 	if (!userservice.userExist(user.getUsername())) {
-	            return "/index";
+		 		model.addAttribute("errorId", "존재하는 하지않는 ID 입니다.");
+	            return "index";
 	        }
 
 	        if (!userservice.passMatch(user.getUsername(), user.getPassword())) {
-	            return "/index";
+	        	model.addAttribute("errorPassword", "비밀번호 불일치");
+	            return "index";
 	        }
 	        
 		 	User userexist= userservice.infoUser(user);

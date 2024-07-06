@@ -9,6 +9,11 @@
 </head>
 <body>
 	<h2>회원가입</h2>
+	
+	  <%-- 전달된 값 확인 --%>
+     <%-- <p>Error ID: <%= request.getAttribute("errorId") %></p>
+    <p>Error Password: <%= request.getAttribute("errorPassword") %></p> --%>
+    
 	<div class="container" id="container">
 		<div class="form-container sign-up-container">
 			<form id="signupForm" action="/signUpPro" method="post">
@@ -44,6 +49,22 @@
 			</div>
 		</div>
 	</div>
+	  <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var errorId = '<%= request.getAttribute("errorId") != null ? request.getAttribute("errorId") : "" %>';
+            var errorPassword = '<%= request.getAttribute("errorPassword") != null ? request.getAttribute("errorPassword") : "" %>';
+
+            if (errorId) {
+                document.getElementById("error-id").style.display = "block";
+                document.getElementById("error-id").textContent = errorId;
+            }
+
+            if (errorPassword) {
+                document.getElementById("error-password").style.display = "block";
+                document.getElementById("error-password").textContent = errorPassword;
+            }
+        });
+    </script>
 	<script src="/js/signup.js?after"></script>
 </body>
 </html>
