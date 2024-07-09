@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.boot.board.domain.Board;
 import com.boot.board.domain.User;
 import com.boot.board.mapper.UserMapper;
 

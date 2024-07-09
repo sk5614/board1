@@ -1,17 +1,7 @@
 package com.boot.board.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,27 +10,18 @@ import javax.servlet.http.HttpSession;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.boot.board.domain.Board;
 import com.boot.board.domain.Search;
@@ -49,8 +30,6 @@ import com.boot.board.service.BoardService;
 import com.boot.board.service.UserService;
 import com.boot.board.service.WeatherService;
 import com.boot.board.util.Utils;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Controller
@@ -205,7 +184,7 @@ public class BoardController {
 	
 	@GetMapping(value = "/board/write")
 	public String boardWrite() {
-		return "board_write";
+		return "board-write";
 	}
 
 	@PostMapping(value = "/board/writepro")
@@ -234,7 +213,7 @@ public class BoardController {
 	@GetMapping(value = "/board/edit")
 	public String boardEdit(Model model, Board board) {
 		model.addAttribute("board", boardservice.infoBoard(board));
-		return "board_edit";
+		return "board-edit";
 	}
 
 	@RequestMapping(value = "/board/editpro")
@@ -246,7 +225,7 @@ public class BoardController {
 	@GetMapping(value = "/board/reply")
 	public String boardReply(Model model, Board board) {
 		model.addAttribute("board", boardservice.infoBoard(board));
-		return "board_reply";
+		return "board-reply";
 	}
 
 	@PostMapping(value = "/board/replypro") // 답글

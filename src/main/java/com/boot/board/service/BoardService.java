@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.boot.board.domain.Board;
 import com.boot.board.domain.Search;
-import com.boot.board.domain.User;
 import com.boot.board.mapper.BoardMapper;
 
 @Service
