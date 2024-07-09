@@ -1,1 +1,1 @@
-![image](https://github.com/sk5614/board1/assets/169679888/f16e1b54-6fa4-4525-a5f9-ee9c9a682677)
+![image](https://github.com/sk5614/board1/assets/169679888/29b58296-a4b7-418f-993f-484ef5e34155)
