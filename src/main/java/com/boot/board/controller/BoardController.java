@@ -24,11 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.boot.board.domain.Board;
+import com.boot.board.domain.Pagination;
 import com.boot.board.domain.Search;
 import com.boot.board.domain.User;
 import com.boot.board.service.BoardService;
 import com.boot.board.service.UserService;
 import com.boot.board.service.WeatherService;
+import com.boot.board.util.PaginationUtil;
 import com.boot.board.util.Utils;
 
 
@@ -158,25 +160,18 @@ public class BoardController {
 		String loggedInUser = (String) session.getAttribute("loggedInUser");
 		String userAuth = (String) session.getAttribute("userAuth");
 		List<Board> list = boardservice.searchBoard(page, size, search);
+		int totalBoards = boardservice.countSearchBoard(search);
+        
+        Pagination pagination =PaginationUtil.getPagination(page, size, totalBoards);
+        
 		
-		
-        int totalBoards = boardservice.countSearchBoard(search);
-        int totalPages = (int) Math.ceil((double) totalBoards / size);
-
-        int startPage = Math.max(1, page - 4);
-        int endPage = Math.min(startPage + 5, totalPages);
-
-        List<Integer> pageNumbers = new ArrayList<>();
-        for (int i = startPage; i <= endPage; i++) {
-            pageNumbers.add(i);
-        }
         model.addAttribute("boards", list);
-        model.addAttribute("size", size);
-        model.addAttribute("nowPage", page);  // 현재 페이지 번호
-        model.addAttribute("startPage", startPage);  // 시작 페이지 번호
-        model.addAttribute("endPage", endPage);  // 끝 페이지 번호
-        model.addAttribute("totalPages", totalPages);  // 전체 페이지 수
-        model.addAttribute("pageNumbers", pageNumbers);  // 페이지 번호 목록
+        model.addAttribute("size", pagination.getSize());
+        model.addAttribute("nowPage", pagination.getNowPage()); // 현재 페이지 번호
+        model.addAttribute("startPage", pagination.getStartPage()); // 시작 페이지 번호
+        model.addAttribute("endPage", pagination.getEndPage()); // 끝 페이지 번호
+        model.addAttribute("totalPages", pagination.getTotalPages());  // 전체 페이지 수
+        model.addAttribute("pageNumbers", pagination.getPageNumbers());  // 페이지 번호 목록
         model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
         model.addAttribute("userAuth", userAuth); // 접속중인 유저 id 
 		return "board-list";
@@ -260,25 +255,18 @@ public class BoardController {
 		
 		
 		List<User> list = userservice.userList(page, size);
-		
         int totalBoards = userservice.countUser();
-        int totalPages = (int) Math.ceil((double) totalBoards / size);
-
-        int startPage = Math.max(1, page - 4);
-        int endPage = Math.min(startPage + 5, totalPages);
-
-        List<Integer> pageNumbers = new ArrayList<>();
-        for (int i = startPage; i <= endPage; i++) {
-            pageNumbers.add(i);
-        }
+        
+        Pagination pagination =PaginationUtil.getPagination(page, size, totalBoards);
+        
         model.addAttribute("users", list);
-        model.addAttribute("size", size);
-        model.addAttribute("nowPage", page);  // 현재 페이지 번호
-        model.addAttribute("startPage", startPage);  // 시작 페이지 번호
-        model.addAttribute("endPage", endPage);  // 끝 페이지 번호
-        model.addAttribute("totalPages", totalPages);  // 전체 페이지 수
-        model.addAttribute("pageNumbers", pageNumbers);  // 페이지 번호 목록
-        model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
+        model.addAttribute("size", pagination.getSize());
+        model.addAttribute("nowPage", pagination.getNowPage()); // 현재 페이지 번호
+        model.addAttribute("startPage", pagination.getStartPage()); // 시작 페이지 번호
+        model.addAttribute("endPage", pagination.getEndPage()); // 끝 페이지 번호
+        model.addAttribute("totalPages", pagination.getTotalPages());  // 전체 페이지 수
+        model.addAttribute("pageNumbers", pagination.getPageNumbers());  // 페이지 번호 목록
+        model.addAttribute("loggedInUser", loggedInUser);
 		return "user-list";
 	}
 	
