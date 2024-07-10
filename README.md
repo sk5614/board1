@@ -20,6 +20,10 @@ Springboot 게시판입니다
 http://noble-minta-sw5614-3279dd38.koyeb.app/
 
 
+## 작동 영상 
+https://youtu.be/WNnXVCBOxIA
+
+
 ## ERD 
 ![image](https://github.com/sk5614/board1/assets/169679888/29b58296-a4b7-418f-993f-484ef5e34155)
 
