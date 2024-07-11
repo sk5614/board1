@@ -150,7 +150,7 @@
             window.location.href = "/board/write";
         }
         function goToList() {
-            window.location.href = "/board/list";
+            window.location.href = "/board/search";
         }
         let pageInfo = {
                 page: ${nowPage}, // 현재 페이지 번호

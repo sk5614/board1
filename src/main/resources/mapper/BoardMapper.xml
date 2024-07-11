@@ -44,8 +44,8 @@
     </update>
     
     <insert id="replyBoard" parameterType="Board">
-    	INSERT INTO board (b_title, b_content, b_date, b_group, b_order, b_depth)
-    	VALUES (#{bTitle}, #{bContent}, NOW(), #{bGroup}, #{bOrder}+1, #{bDepth}+1)
+    	INSERT INTO board (b_title, b_content, b_date, b_group, b_order, b_depth, b_writer)
+    	VALUES (#{bTitle}, #{bContent}, NOW(), #{bGroup}, #{bOrder}+1, #{bDepth}+1,  #{bWriter})
     </insert>
 	
 	<update id="setReply" parameterType="Board">
