@@ -34,7 +34,8 @@ https://youtu.be/WNnXVCBOxIA
 <details>
 	
 <summary>접기/펼치기</summary>
-![image](https://github.com/sk5614/board1/assets/169679888/6eee44f5-cbf6-4e9a-8ceb-17d1443d5e1e)
+ <img src="[https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png](https://github.com/sk5614/board1/assets/169679888/6eee44f5-cbf6-4e9a-8ceb-17d1443d5e1e)" alt="GitHub Mark">
+
 </details>
 
 ## 게시판 리스트 
