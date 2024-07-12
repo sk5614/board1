@@ -48,8 +48,29 @@ https://youtu.be/WNnXVCBOxIA
 
 
 #### 날씨 api
+```
+    public Map<String, Object> getCurrentWeather(String lat, String lon) throws IOException {
+        String serviceKey = "7c7cfda23137e9e1d136e8ca5d565cc5";
+        String apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 
+        // URI 생성
+        String finalUri = String.format("%s?lat=%s&lon=%s&appid=%s", apiUrl, lat, lon, serviceKey);
 
+        // API 호출 및 응답 받기
+        ResponseEntity<String> response = restTemplate.getForEntity(finalUri, String.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            String responseBody = response.getBody();
+
+            // JSON 데이터를 Map으로 변환하여 반환
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Object> weatherData = objectMapper.readValue(responseBody, new TypeReference<Map<String, Object>>() {});
+
+            // 온도 데이터를 섭씨로 변환하여 Map에 추가
+            double tempKelvin = ((Number) ((Map<String, Object>) weatherData.get("main")).get("temp")).doubleValue();
+            int tempCelsius = utils.convertTemp(tempKelvin);
+            weatherData.put("tempCelsius", tempCelsius);
+```
 - 
 #### 검색
 
