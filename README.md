@@ -47,7 +47,7 @@ https://youtu.be/WNnXVCBOxIA
 
 
 
-#### 날씨 api
+## 날씨 
 
 <details>
 	
@@ -84,11 +84,12 @@ https://youtu.be/WNnXVCBOxIA
 
 </details>
 
-#### 검색
+
+## 검색
 
 
-- 
-#### 권한 설정 
+ 
+## 권한 설정 
 
 
 
