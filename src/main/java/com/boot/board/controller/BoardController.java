@@ -11,7 +11,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +45,7 @@ public class BoardController {
 	@Autowired UserService userservice;
 	@Autowired PasswordEncoder encoder;
 	@Autowired WeatherService weatherService;
+    @Autowired private HttpSession session;
 	
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -66,8 +70,14 @@ public class BoardController {
 	}
 	
 	@PostMapping("/signUpPro") 
-	  public String signupPro(User user) {
-	     
+	  public String signupPro(Model model, User user) {
+	     	
+	
+		  if (userservice.userExist(user.getUsername())) {
+		 		model.addAttribute("errorExId", "이미 존재하는 id 입니다");
+	            return "index";
+	       }
+	 	
 		  String encodedPassword = encoder.encode(user.getPassword());  //비밀번호 암호화
 	      
 	      user.setPassword(encodedPassword);
@@ -80,6 +90,7 @@ public class BoardController {
 	      userservice.createUser(user);
 	      userservice.createAuthorities(user);
 	      
+	      model.addAttribute("signupSuccess", true); // 가입 성공 여부를 모델에 추가
 	      return "/index";
 	}
 	
@@ -200,20 +211,36 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/board/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
 	public String boardDelete(Model model, Board board) {
 		boardservice.deleteBoard(board);
 		return "redirect:/board/search";
 	}
 
 	@GetMapping(value = "/board/edit")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
 	public String boardEdit(Model model, Board board) {
+//		String check=boardservice.infoBoard(board).getbWriter();
+//		String checkS=(String) session.getAttribute("loggedInUser");
+//		if(!checkS.equals(check)) {
+//			model.addAttribute("warning","warning");
+//			return "redirect:/board/search";
+//		}
+		System.out.println(boardservice.isAuthor( board));
 		model.addAttribute("board", boardservice.infoBoard(board));
 		return "board-edit";
 	}
 
 	@RequestMapping(value = "/board/editpro")
-	public String boardEditPro(Board board) {
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
+	public String boardEditPro(Model model, Board board) {
+		String check=boardservice.infoBoard(board).getbWriter();
+		if(session.getAttribute("loggedInUser")!=check) {
+			model.addAttribute("warning","warning");
+			return "redirect:/board/search";
+		}
 		boardservice.editBoard(board);
+
 		return "redirect:/board/info?bId=" + board.getbId();
 	}
 

@@ -17,5 +17,5 @@ public class BoardApplication {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-
+    
 }

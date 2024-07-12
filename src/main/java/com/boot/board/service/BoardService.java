@@ -8,17 +8,20 @@ import org.springframework.stereotype.Service;
 import com.boot.board.domain.Board;
 import com.boot.board.domain.Search;
 import com.boot.board.mapper.BoardMapper;
+import com.boot.board.util.SessionUtils;
 
 @Service
 public class BoardService {
 
 	@Autowired
 	BoardMapper boardmapper;
+    @Autowired
+    private SessionUtils sessionUtils;
 
-	public List<Board> selectBoardList(int page, int size) {
-		int offset = (page-1)*size;
-		return boardmapper.selectBoardList(size,offset);
-	}
+//	public List<Board> selectBoardList(int page, int size) {
+//		int offset = (page-1)*size;
+//		return boardmapper.selectBoardList(size,offset);
+//	}
 
 	public int countBoard() {
 		return boardmapper.countBoard();
@@ -61,4 +64,12 @@ public class BoardService {
 		int offset = (page-1)*size;
 		return boardmapper.searchBoard(size,offset,search);
 	}
+	
+
+    public boolean isAuthor(Board board) {
+        String username = sessionUtils.getLoggedInUser();
+        Board checkWriter = boardmapper.infoBoard(board);
+        return checkWriter != null && checkWriter.getbWriter() != null && checkWriter.getbWriter().equals(username);
+    }
+	
 }

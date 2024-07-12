@@ -52,6 +52,7 @@
 	  <script>
         document.addEventListener("DOMContentLoaded", function() {
             var errorId = '<%= request.getAttribute("errorId") != null ? request.getAttribute("errorId") : "" %>';
+            var errorExId = '<%= request.getAttribute("errorExId") != null ? request.getAttribute("errorExId") : "" %>';
             var errorPassword = '<%= request.getAttribute("errorPassword") != null ? request.getAttribute("errorPassword") : "" %>';
 
             if (errorId) {
@@ -62,6 +63,17 @@
             if (errorPassword) {
                 document.getElementById("error-password").style.display = "block";
                 document.getElementById("error-password").textContent = errorPassword;
+            }
+            
+            if (errorExId) {
+                document.getElementById("errorusername").style.display = "block";
+                document.getElementById("errorusername").textContent = errorExId;
+                alert('이미 존재하는 ID입니다. 다시 진행하세요');
+            } 
+            
+            const signupSuccess = '<%= request.getAttribute("signupSuccess") != null ? request.getAttribute("signupSuccess") : "" %>';
+            if (signupSuccess) {
+                alert('회원가입이 성공적으로 완료되었습니다.'); 
             }
         });
     </script>

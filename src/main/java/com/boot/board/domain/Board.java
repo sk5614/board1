@@ -13,6 +13,8 @@ public class Board {
 	private int bOrder;
 	private int bDepth;
 	
+	
+	
 	public int getbId() {
 		return bId;
 	}
