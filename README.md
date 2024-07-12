@@ -32,6 +32,8 @@ https://youtu.be/WNnXVCBOxIA
 
 ## 로그인 화면
 <details>
+	
+<summary>접기/펼치기</summary>
 ![image](https://github.com/sk5614/board1/assets/169679888/6eee44f5-cbf6-4e9a-8ceb-17d1443d5e1e)
 </details>
 
