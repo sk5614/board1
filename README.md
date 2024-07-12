@@ -33,10 +33,10 @@ https://youtu.be/WNnXVCBOxIA
 ## 로그인 화면
 <details>
 	
-<summary>접기/펼치기</summary>
- <img src="[https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png](https://github.com/sk5614/board1/assets/169679888/6eee44f5-cbf6-4e9a-8ceb-17d1443d5e1e)" alt="GitHub Mark">
-
+  <summary>Click to see the image</summary>
+  <img src="https://github.com/sk5614/board1/assets/169679888/6eee44f5-cbf6-4e9a-8ceb-17d1443d5e1e" alt="Example Image">
 </details>
+
 
 ## 게시판 리스트 
 ![image](https://github.com/sk5614/board1/assets/169679888/1bfbed4a-5601-46bc-b17b-e2b90ee350ae)
