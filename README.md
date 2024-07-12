@@ -48,9 +48,12 @@ https://youtu.be/WNnXVCBOxIA
 
 
 #### 날씨 api
+<details>
+	
+  <summary>코드 보기 </summary>
 ```
     public Map<String, Object> getCurrentWeather(String lat, String lon) throws IOException {
-        String serviceKey = "7c7cfda23137e9e1d136e8ca5d565cc5";
+        String serviceKey = "****************";
         String apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 
         // URI 생성
@@ -71,7 +74,9 @@ https://youtu.be/WNnXVCBOxIA
             int tempCelsius = utils.convertTemp(tempKelvin);
             weatherData.put("tempCelsius", tempCelsius);
 ```
-- 
+-
+</details>
+
 #### 검색
 
 
