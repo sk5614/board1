@@ -27,13 +27,12 @@
 	      u_id,
 	      u_auth
 	   ) VALUES
-	     <foreach item="authority" index="index" collection="authorities" separator=",">
-	        (#{username}, #{authority.role})
-	     </foreach>
-	     ON DUPLICATE KEY
-	     UPDATE
-	        u_id = #{username}
+	      (#{username}, #{role})
+	   ON DUPLICATE KEY
+	   UPDATE
+	      u_auth = #{role}
 	</insert>
+
 	
 	<select id="userExist" parameterType="User" resultMap="UserResultMap">
         SELECT * 

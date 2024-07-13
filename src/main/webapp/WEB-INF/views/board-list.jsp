@@ -211,8 +211,8 @@
                                         <div class="weather-details">
                                             <p><strong>위치:</strong> ${weatherData.name}</p>
                                             <p><strong>온도:</strong> ${weatherData.tempCelsius} °C</p>
-                                            <p><strong>최저 온도:</strong> ${weatherData.tempMinCelsius} °C</p>
-                                            <p><strong>최고 온도:</strong> ${weatherData.tempMaxCelsius} °C</p>
+                                      <!--  <p><strong>최저 온도:</strong> ${weatherData.tempMinCelsius} °C</p>-->
+                                      <!--  <p><strong>최고 온도:</strong> ${weatherData.tempMaxCelsius} °C</p> -->
                                             <p><strong>습도:</strong> ${weatherData.main.humidity} %</p>
                                             <p><strong>날씨:</strong> ${weatherData.weather[0].description}</p>
                                         </div>

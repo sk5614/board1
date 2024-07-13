@@ -258,7 +258,6 @@ public class BoardController {
 		return "redirect:/board/search"; // 이전화면으로 리다이렉트
 	}
 	
-	@Secured({"ROLE_ADMIN"})
 	@GetMapping(value = "/userInfo") // 답글
 	public String userInfo(Model model, User user, HttpSession session) {
 		model.addAttribute("user", userservice.infoUser(user));
@@ -268,7 +267,6 @@ public class BoardController {
 	}
 	
 	
-	@Secured({"ROLE_ADMIN"})
 	@GetMapping(value = "/user/list")
 	public String userList(Model model, 
 			@RequestParam(defaultValue = "1") int page,

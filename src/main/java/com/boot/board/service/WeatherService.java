@@ -43,20 +43,20 @@ public class WeatherService {
             int tempCelsius = utils.convertTemp(tempKelvin);
             weatherData.put("tempCelsius", tempCelsius);
             
-            // 최고 온도
-            double tempMaxKelvin = ((Number) ((Map<String, Object>) weatherData.get("main")).get("temp_max")).doubleValue();
-            int tempMaxCelsius = utils.convertTemp(tempMaxKelvin);
-            weatherData.put("tempMaxCelsius", tempMaxCelsius);
-
-            // 최저 온도
-            double tempMinKelvin = ((Number) ((Map<String, Object>) weatherData.get("main")).get("temp_min")).doubleValue();
-            int tempMinCelsius = utils.convertTemp(tempMinKelvin);
-            weatherData.put("tempMinCelsius", tempMinCelsius);
-
-            // 체감 온도
-            double feelsLikeKelvin = ((Number) ((Map<String, Object>) weatherData.get("main")).get("feels_like")).doubleValue();
-            int feelsLikeCelsius = utils.convertTemp(feelsLikeKelvin);
-            weatherData.put("feelsLikeCelsius", feelsLikeCelsius);
+//            // 최고 온도
+//            double tempMaxKelvin = ((Number) ((Map<String, Object>) weatherData.get("main")).get("temp_max")).doubleValue();
+//            int tempMaxCelsius = utils.convertTemp(tempMaxKelvin);
+//            weatherData.put("tempMaxCelsius", tempMaxCelsius);
+//
+//            // 최저 온도
+//            double tempMinKelvin = ((Number) ((Map<String, Object>) weatherData.get("main")).get("temp_min")).doubleValue();
+//            int tempMinCelsius = utils.convertTemp(tempMinKelvin);
+//            weatherData.put("tempMinCelsius", tempMinCelsius);
+//
+//            // 체감 온도
+//            double feelsLikeKelvin = ((Number) ((Map<String, Object>) weatherData.get("main")).get("feels_like")).doubleValue();
+//            int feelsLikeCelsius = utils.convertTemp(feelsLikeKelvin);
+//            weatherData.put("feelsLikeCelsius", feelsLikeCelsius);
 
             
             return weatherData;
