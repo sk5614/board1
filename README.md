@@ -19,6 +19,8 @@ Springboot 게시판입니다
 ## 배포 링크
 http://noble-minta-sw5614-3279dd38.koyeb.app/
 
+-**호스팅플랫폼** :  Koyeb , Amazon RDS
+
 
 ## 작동 영상 
 https://youtu.be/WNnXVCBOxIA
