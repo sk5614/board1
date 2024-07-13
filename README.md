@@ -87,6 +87,44 @@ https://youtu.be/WNnXVCBOxIA
 
 ## 검색
 
+<details>
+	
+  <summary>이미지 보기 </summary>
+  <img src="https://github.com/user-attachments/assets/222d332e-bd45-48d6-a23e-f4e0ae178b38" alt="Example Image">
+</details>
+
+<details>
+	
+  <summary>쿼리문 보기 </summary>
+```
+	<select id="searchBoard" resultMap="BoardResultMap">
+	    SELECT b_id, b_title, b_content, b_date, b_writer, b_group, b_order, b_depth
+	    FROM board
+	    <where>
+	        <if test="search.keyword != null and search.keyword != ''">
+	            <choose>
+	                <when test="search.searchType == 'title'">
+	                    b_title LIKE CONCAT('%', #{search.keyword}, '%')
+	                </when>
+	                <when test="search.searchType == 'content'">
+	                    b_content LIKE CONCAT('%', #{search.keyword}, '%')
+	                </when>
+	                <when test="search.searchType == 'writer'">
+	                    b_writer LIKE CONCAT('%', #{search.keyword}, '%')
+	                </when>
+	                <otherwise>
+	                    (b_title LIKE CONCAT('%', #{search.keyword}, '%')
+	                    OR b_content LIKE CONCAT('%', #{search.keyword}, '%')
+	                    OR b_writer LIKE CONCAT('%', #{search.keyword}, '%'))
+	                </otherwise>
+	            </choose>
+	        </if>
+	    </where>
+	    ORDER BY b_group DESC, b_order ASC, b_depth ASC
+	    LIMIT #{limit} OFFSET #{offset}
+	</select>
+ ```
+</details>
 
  
 ## 권한 설정 
