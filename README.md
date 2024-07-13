@@ -96,6 +96,7 @@ https://youtu.be/WNnXVCBOxIA
 <details>
 	
   <summary>쿼리문 보기 </summary>
+  
 ```
 	<select id="searchBoard" resultMap="BoardResultMap">
 	    SELECT b_id, b_title, b_content, b_date, b_writer, b_group, b_order, b_depth
@@ -124,6 +125,7 @@ https://youtu.be/WNnXVCBOxIA
 	    LIMIT #{limit} OFFSET #{offset}
 	</select>
  ```
+
 </details>
 
  
