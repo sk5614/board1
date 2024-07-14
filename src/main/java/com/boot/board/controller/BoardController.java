@@ -51,7 +51,7 @@ public class BoardController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
 		System.out.println("인덱스 페이지 호출");
-		return "test";
+		return "index";
 	}
 	
 	
