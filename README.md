@@ -19,7 +19,7 @@ Springboot 게시판입니다
 ## 배포 링크
 http://noble-minta-sw5614-3279dd38.koyeb.app/   (현재접속불가)
 
-http://43.203.121.82:8080/  
+http://43.203.121.82:8080/ (접속 가능)
 
 -**호스팅플랫폼** :  Koyeb (계정잠김),Amazon Ec2, Amazon RDS
 
