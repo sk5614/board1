@@ -3,6 +3,9 @@ package com.boot.board.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.boot.board.domain.Board;
@@ -66,10 +69,19 @@ public class BoardService {
 	}
 	
 
-    public boolean isAuthor(Board board) {
-        String username = sessionUtils.getLoggedInUser();
-        Board checkWriter = boardmapper.infoBoard(board);
-        return checkWriter != null && checkWriter.getbWriter() != null && checkWriter.getbWriter().equals(username);
-    }
+	 public boolean isAuthor(Board board) {
+	        // 현재 인증된 사용자 정보 가져오기
+	        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	        String username = null;
+
+	        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+	            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+	            username = userDetails.getUsername();
+	        }
+
+	        // Board 객체의 작성자 정보 가져오기
+	        Board checkWriter = boardmapper.infoBoard(board);
+	        return checkWriter != null && checkWriter.getbWriter() != null && checkWriter.getbWriter().equals(username);
+	    }
 	
 }

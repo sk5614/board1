@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.boot.board.util.Utils;
+import com.boot.board.util.TempUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,7 +19,7 @@ public class WeatherService {
     private RestTemplate restTemplate;
 
     @Autowired
-    private Utils utils;
+    private TempUtils utils;
 
     public Map<String, Object> getCurrentWeather(String lat, String lon) throws IOException {
         String serviceKey = "7c7cfda23137e9e1d136e8ca5d565cc5";

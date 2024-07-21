@@ -75,7 +75,7 @@
             </table>
             <a href="/board/reply?bId=${board.bId}&bGroup=${board.bGroup}&bOrder=${board.bOrder}&bDepth=${board.bDepth}" class="btn btn-custom">답글</a>
 			<c:choose>
-			    <c:when test="${board.bWriter == loggedInUser || userAuth == 'ROLE_ADMIN'}">
+			    <c:when test="${board.bWriter == loggedInUser || authorities == 'ROLE_ADMIN'}">
 			        <a href="/board/edit?bId=${board.bId}" class="btn btn-custom">수정</a>
 			        <a href="/board/delete?bId=${board.bId}" class="btn btn-custom">삭제</a>
 			    </c:when>

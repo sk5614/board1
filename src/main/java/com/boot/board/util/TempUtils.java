@@ -3,7 +3,7 @@ package com.boot.board.util;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Utils {
+public class TempUtils {
     
 	
 	public int convertTemp(double k) {

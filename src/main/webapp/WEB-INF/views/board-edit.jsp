@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,10 +17,14 @@
   <form action="/board/editpro?bId=${board.bId}" name="board" method="post">
     <div class="mb-3 mt-3">
       	<input type="text" class="form-control" style="width:50%"  value="${board.bTitle}" name="bTitle" >
-      <textarea class="form-control" style="width:50%" rows="10"  name="bContent"  placeholder="${board.bContent}" ></textarea>
+      <textarea class="form-control" style="width:50%" rows="10"  name="bContent"  placeholder="${board.bContent}" >${board.bContent}</textarea>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
+  
+ <!--  <c:forEach var="authority" items="${authorities}">
+    <p>${authority.authority}</p>
+</c:forEach>  -->
 </div>
 
 </body>

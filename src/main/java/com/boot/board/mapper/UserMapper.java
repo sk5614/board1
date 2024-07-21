@@ -12,7 +12,6 @@ public interface UserMapper {
 	
 	public void createUser(User user);
 
-	
 	public User userExist(String username);
 
 	public User userExist(User user);
@@ -24,4 +23,6 @@ public interface UserMapper {
 	public List<User> userList(@Param("limit") int limit,@Param("offset") int offset);
 	
 	public void editAuthority(User user);
+
+
 }

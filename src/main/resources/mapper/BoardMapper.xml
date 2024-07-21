@@ -32,10 +32,7 @@
 		SELECT COUNT(*) FROM board
 	</select>
     
-    <insert id="writeBoard" >
-	    INSERT INTO board (b_title, b_content, b_date,b_writer)
-	    VALUES (#{bTitle}, #{bContent}, NOW(), #{bWriter} )
-    </insert>
+  
     
     <update id="setGroup" >
 	    UPDATE board 
@@ -54,17 +51,18 @@
 	    WHERE b_group = #{bGroup} AND b_order > #{bOrder}
 	</update>
 	
+
+      
+    <insert id="writeBoard" >
+	    INSERT INTO board (b_title, b_content, b_date,b_writer)
+	    VALUES (#{bTitle}, #{bContent}, NOW(), #{bWriter} )
+    </insert>
+    
     <select id="infoBoard" parameterType="Board" resultMap="BoardResultMap">
 	    SELECT *
 	    FROM board
 	    WHERE b_id= ${bId}
     </select>
-    
-    <delete id="deleteBoard" parameterType="Board" >
-    	DELETE 
-    	FROM board 
-    	WHERE b_id=#{bId}
-    </delete>
     
     <update id="editBoard" parameterType="Board">
     	UPDATE board
@@ -72,6 +70,14 @@
     		b_content=#{bContent}
     	WHERE b_id=#{bId}	
     </update>
+    
+    <delete id="deleteBoard" parameterType="Board" >
+    	DELETE 
+    	FROM board 
+    	WHERE b_id=#{bId}
+    </delete>
+    
+
     
     <select id="countBoardbyuser" resultType="int">
 		SELECT COUNT(*) 

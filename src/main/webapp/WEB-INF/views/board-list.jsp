@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -91,10 +95,12 @@
                         <button id="userListButton" type="button" class="btn btn-outline-primary" onclick="goToUser()">회원목록</button>
                     </li>
                 </ul>
-                <form class="d-flex" action="/logout" method="get">
+        		                  <form class="d-flex" action="/logout" method="post">
+                    <sec:csrfInput />
                     <c:choose>
                         <c:when test="${not empty loggedInUser}">
                             <span class="navbar-text me-2">로그인 중: ${loggedInUser}</span>
+                            <span class="badge bg-info me-1">${authorities}</span>
                             <button type="submit" class="btn btn-outline-danger">로그아웃</button>
                         </c:when>
                         <c:otherwise>
@@ -232,6 +238,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+    
+	    // 서버에서 전달된 권한 리스트를 자바스크립트 배열로 변환
+	
         function goToWrite() {
             window.location.href = "/board/write";
         }
@@ -243,8 +252,11 @@
         }
         
         function checkUserRole() {
-        	var userAuth = "${userAuth}";
-            if (userAuth !== 'ROLE_ADMIN') {
+            var authorities = "${(authorities)}";
+            // `authorities` 배열에 'ROLE_ADMIN'이 포함되어 있는지 확인
+            if (authorities.includes('ROLE_ADMIN')) {
+                document.getElementById('userListButton').style.display = 'block';
+            } else {
                 document.getElementById('userListButton').style.display = 'none';
             }
         }

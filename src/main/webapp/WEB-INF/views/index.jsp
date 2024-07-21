@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+	
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,6 +31,7 @@
 		<div class="form-container sign-in-container">
 			<form id="signinForm" action="/signIn" method="post">
 				<h1>Sign in</h1>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				<input type="text" name="username" placeholder="Id" />
 				<input type="password" name="password" placeholder="Password" />
 				<button>로그인</button>
@@ -49,6 +52,7 @@
 			</div>
 		</div>
 	</div>
+	
 	  <script>
         document.addEventListener("DOMContentLoaded", function() {
             var errorId = '<%= request.getAttribute("errorId") != null ? request.getAttribute("errorId") : "" %>';

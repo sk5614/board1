@@ -1,20 +1,23 @@
 package com.boot.board.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,23 +33,33 @@ import com.boot.board.domain.Board;
 import com.boot.board.domain.Pagination;
 import com.boot.board.domain.Search;
 import com.boot.board.domain.User;
+import com.boot.board.security.SecurityUtils;
 import com.boot.board.service.BoardService;
 import com.boot.board.service.UserService;
 import com.boot.board.service.WeatherService;
 import com.boot.board.util.PaginationUtil;
-import com.boot.board.util.Utils;
+import com.boot.board.util.TempUtils;
 
 
 @Controller
 public class BoardController {
 	
-    @Autowired Utils util;
+    @Autowired TempUtils util;
 	@Autowired BoardService boardservice;
 	@Autowired UserService userservice;
 	@Autowired PasswordEncoder encoder;
 	@Autowired WeatherService weatherService;
-    @Autowired private HttpSession session;
 	
+
+    private final SecurityUtils securityUtils;
+
+    @Autowired
+    public BoardController(SecurityUtils securityUtils) {
+        this.securityUtils = securityUtils;
+    }
+
+    
+    
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
@@ -64,13 +77,9 @@ public class BoardController {
 //        return ResponseEntity.ok("Username available");
 //    }
 //	
-	@RequestMapping("/signUp") 
-	public String signup() {
-		return "/signup";
-	}
 	
 	@PostMapping("/signUpPro") 
-	  public String signupPro(Model model, User user) {
+	  public String signup(Model model, User user) {
 	     	
 	
 		  if (userservice.userExist(user.getUsername())) {
@@ -89,87 +98,46 @@ public class BoardController {
 	      
 	      userservice.createUser(user);
 	      userservice.createAuthorities(user);
+	      System.out.println(user.getAuthorities());
 	      
 	      model.addAttribute("signupSuccess", true); // 가입 성공 여부를 모델에 추가
 	      return "/index";
 	}
 	
+
+    @PostMapping("/signIn")
+    public String signIn(HttpServletRequest request, Model model) {
+        String errorId = (String) request.getAttribute("errorId");
+        String errorPassword = (String) request.getAttribute("errorPassword");
+
+        model.addAttribute("errorId", errorId);
+        model.addAttribute("errorPassword", errorPassword);
+
+        return "index";  // 로그인 실패 시 "index.jsp" 파일을 반환
+    }
 	
-	 @PostMapping("/signIn")
-	    public String signIn(User user, Model model, HttpSession session) {
-
-		 	if (!userservice.userExist(user.getUsername())) {
-		 		model.addAttribute("errorId", "존재하는 하지않는 ID 입니다.");
-	            return "index";
-	        }
-
-	        if (!userservice.passMatch(user.getUsername(), user.getPassword())) {
-	        	model.addAttribute("errorPassword", "비밀번호 불일치");
-	            return "index";
-	        }
-	        
-		 	User userexist= userservice.infoUser(user);
-	        session.setAttribute("loggedInUser", user.getUsername());
-	        session.setAttribute("userAuth", userexist.getuAuth());
-	        
-	        return "redirect:/board/search";
-	    }
 	
-	  @GetMapping("/logout")
-	    public String logout(HttpServletRequest request) {
-	        HttpSession session = request.getSession(false); // 세션이 존재하지 않으면 null 반환
-
-	        if (session != null) {
-	            session.invalidate(); // 세션 무효화
-	        }
-
-	        return "redirect:/"; // 홈 페이지로 리디렉션
-	    }
-
-//	@GetMapping(value = "/board/list")   
-//	public String boardList(Model model, 
-//			@RequestParam(defaultValue = "1") int page,
-//            @RequestParam(defaultValue = "10") int size,
-//            HttpSession session) {
-//		String loggedInUser = (String) session.getAttribute("loggedInUser");
-//		List<Board> list = boardservice.selectBoardList(page, size);
-//		
-//        int totalBoards = boardservice.countBoard();
-//        int totalPages = (int) Math.ceil((double) totalBoards / size);
-//
-//        int startPage = Math.max(1, page - 4);
-//        int endPage = Math.min(startPage + 5, totalPages);
-//
-//        List<Integer> pageNumbers = new ArrayList<>();
-//        for (int i = startPage; i <= endPage; i++) {
-//            pageNumbers.add(i);
-//        }
-//        model.addAttribute("boards", list);
-//        model.addAttribute("size", size);
-//        model.addAttribute("nowPage", page);  // 현재 페이지 번호
-//        model.addAttribute("startPage", startPage);  // 시작 페이지 번호
-//        model.addAttribute("endPage", endPage);  // 끝 페이지 번호
-//        model.addAttribute("totalPages", totalPages);  // 전체 페이지 수
-//        model.addAttribute("pageNumbers", pageNumbers);  // 페이지 번호 목록
-//        model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
-//		return "board_list";
-//	}
-	
+	    @GetMapping("/logout")
+	    public String logout(Model model) {
+	        return "index";  // index.jsp로 이동
+	    }	  
 	
 	@GetMapping(value = "/board/search")
 	public String boardSearch(Model model, 
 			@RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
-            HttpSession session, Search search) throws IOException {
+             Search search) throws IOException {
+	  
+		 // 현재 인증된 사용자 정보 가져오기
+		securityUtils.addAuthenticatedUserDetails(model);	 //로그인 유저 정보 전달 
+		
 		
         String lat = "35.8722";
-        String lon = "128.6025";
+        String lon = "128.6025"; // 대구 좌표값 
 
 	    Map<String, Object> weatherData = weatherService.getCurrentWeather(lat, lon);
-	    model.addAttribute("weatherData", weatherData);
+	    model.addAttribute("weatherData", weatherData); // 날씨 정보 
 		
-		String loggedInUser = (String) session.getAttribute("loggedInUser");
-		String userAuth = (String) session.getAttribute("userAuth");
 		List<Board> list = boardservice.searchBoard(page, size, search);
 		int totalBoards = boardservice.countSearchBoard(search);
         
@@ -183,8 +151,6 @@ public class BoardController {
         model.addAttribute("endPage", pagination.getEndPage()); // 끝 페이지 번호
         model.addAttribute("totalPages", pagination.getTotalPages());  // 전체 페이지 수
         model.addAttribute("pageNumbers", pagination.getPageNumbers());  // 페이지 번호 목록
-        model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
-        model.addAttribute("userAuth", userAuth); // 접속중인 유저 id 
 		return "board-list";
 	}
 	
@@ -207,6 +173,8 @@ public class BoardController {
 		model.addAttribute("board", boardservice.infoBoard(board));
 		model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
 	    model.addAttribute("userAuth", userAuth); 
+	    
+	    System.out.println(boardservice.isAuthor(board));
 		return "board-info";
 	}
 
@@ -226,19 +194,24 @@ public class BoardController {
 //			model.addAttribute("warning","warning");
 //			return "redirect:/board/search";
 //		}
-		System.out.println(boardservice.isAuthor( board));
+		  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getAuthorities());
+		  if (authentication != null) {
+            model.addAttribute("authorities", authentication.getAuthorities());
+        }
+		System.out.println(boardservice.isAuthor(board));
 		model.addAttribute("board", boardservice.infoBoard(board));
 		return "board-edit";
 	}
 
 	@RequestMapping(value = "/board/editpro")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
+   @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
 	public String boardEditPro(Model model, Board board) {
-		String check=boardservice.infoBoard(board).getbWriter();
-		if(session.getAttribute("loggedInUser")!=check) {
-			model.addAttribute("warning","warning");
-			return "redirect:/board/search";
-		}
+//		String check=boardservice.infoBoard(board).getbWriter();
+//		if((String)session.getAttribute("loggedInUser")!=check) {
+//			model.addAttribute("warning","warning");
+//			return "redirect:/board/search";
+//		}
 		boardservice.editBoard(board);
 
 		return "redirect:/board/info?bId=" + board.getbId();
@@ -258,6 +231,8 @@ public class BoardController {
 		return "redirect:/board/search"; // 이전화면으로 리다이렉트
 	}
 	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "/userInfo") // 답글
 	public String userInfo(Model model, User user, HttpSession session) {
 		model.addAttribute("user", userservice.infoUser(user));
@@ -266,17 +241,13 @@ public class BoardController {
 		return "user-info"; // 이전화면으로 리다이렉트
 	}
 	
-	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "/user/list")
 	public String userList(Model model, 
 			@RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             HttpSession session) {
 		String loggedInUser = (String) session.getAttribute("loggedInUser");
-	    String userAuth = (String) session.getAttribute("userAuth");
-	    if (!"ROLE_ADMIN".equals(userAuth)) {
-	        return "redirect:/board/search"; 
-	    }
 		
 		
 		List<User> list = userservice.userList(page, size);

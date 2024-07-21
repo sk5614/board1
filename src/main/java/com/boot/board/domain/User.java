@@ -1,7 +1,10 @@
 package com.boot.board.domain;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
@@ -43,12 +46,21 @@ public class User implements UserDetails {
 		this.uAuth = uAuth;
 	}
 	
-	
-	
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() { // 사용자가 갖고 있는 권한을 반환 
-		return authorities;
-	}
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        if (uAuth == null || uAuth.isEmpty()) {
+//            throw new IllegalArgumentException("Authority cannot be null or empty");
+//        }
+//        return Collections.singletonList(new SimpleGrantedAuthority(uAuth));
+//    }
+    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (authorities == null || authorities.isEmpty()) {
+            throw new IllegalArgumentException("Authority cannot be null or empty");
+        }
+        return authorities;
+    }
 
 	@Override
 	public String getPassword() {
@@ -59,7 +71,7 @@ public class User implements UserDetails {
 	public String getUsername() {
 		return username;
 	}
-
+	
 	@Override
 	public boolean isAccountNonExpired() {   // 계정 만료 여부 boolean 으로 반환  유효기간 관리용
 		return isAccountNonExpired;
@@ -104,8 +116,10 @@ public class User implements UserDetails {
 		this.isEnabled = isEnabled;
 	}
 
-	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-		this.authorities = authorities;
-	}
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
+	
 	
 }

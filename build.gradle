@@ -5,7 +5,7 @@ plugins {
 	id 'war' // 추가
 	
 }
-apply plugin: 'war'
+apply plugin: 'war' // 추가 
 
 group = 'com.boot'
 version = '0.0.1-SNAPSHOT'
@@ -39,6 +39,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator' //actuator (모니터링)
 	implementation "io.micrometer:micrometer-registry-prometheus"
+	implementation 'org.springframework.security:spring-security-taglibs'
 	
 	
 	testCompileOnly 'org.projectlombok:lombok:1.18.24' // 테스트 환경에서 주입

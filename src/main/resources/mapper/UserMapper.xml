@@ -22,17 +22,23 @@
 						 ,#{isAccountNonLocked} ,#{isCredentialsNonExpired} ,#{isEnabled})  				
 	</select>
 	
-	<insert id="createAuthority" parameterType="org.springframework.security.core.GrantedAuthority">
+	<!--  <insert id="createAuthority" parameterType="org.springframework.security.core.GrantedAuthority">
 	   INSERT INTO auth (
 	      u_id,
 	      u_auth
 	   ) VALUES
-	      (#{username}, #{role})
+	      (#{username}, #{authorities})
 	   ON DUPLICATE KEY
 	   UPDATE
-	      u_auth = #{role}
+	      u_auth = #{authorities}
 	</insert>
+		-->
 
+	<insert id="createAuthority" parameterType="User">
+	    INSERT INTO auth (u_id, u_auth)
+	    VALUES (#{username}, #{authorities[0].authority})
+	    ON DUPLICATE KEY UPDATE u_auth = VALUES(u_auth)
+	</insert>
 	
 	<select id="userExist" parameterType="User" resultMap="UserResultMap">
         SELECT * 
@@ -70,5 +76,11 @@
 	   	SET u_auth = #{uAuth}
 	   	WHERE u_id=#{username}
 	</update>   
-    
+	
+<!-- <select id="findByUsername" parameterType="String">
+	 SELECT *
+	 FROM user u
+	 INNER JOIN auth a ON u.u_id=a.u_id 
+	 WHERE a.u_id = #{username}"
+    </select>  -->
 </mapper>

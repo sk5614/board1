@@ -3,6 +3,7 @@ package com.boot.board.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import com.boot.board.domain.User;
 import com.boot.board.mapper.UserMapper;
 
 @Service
-public class UserService {
+public class UserService  {
 
 	@Autowired
 	UserMapper usermapper;
@@ -22,10 +23,10 @@ public class UserService {
 		usermapper.createUser(user);
 
 	}
-
-	public void createAuthorities(User user) {
-	    usermapper.createAuthority(user);
-	}
+    public void createAuthorities(User user) {
+        usermapper.createAuthority(user);
+    }
+	
 
     public boolean userExist(String username) {
     	return usermapper.userExist(username) !=null;
@@ -55,5 +56,13 @@ public class UserService {
 	public void editAuthority(User user) {
 		usermapper.editAuthority(user);
 	}
+	
+    public User userFind(String username) {
+    	return usermapper.userExist(username) ;
+    }
 
+
+    
 }
+
+
