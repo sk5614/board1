@@ -9,9 +9,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 
 import com.boot.board.domain.Board;
 import com.boot.board.domain.Pagination;
@@ -45,7 +50,7 @@ import com.boot.board.util.TempUtils;
 public class BoardController {
 	
     @Autowired TempUtils util;
-	@Autowired BoardService boardservice;
+	@Autowired BoardService boardService;
 	@Autowired UserService userservice;
 	@Autowired PasswordEncoder encoder;
 	@Autowired WeatherService weatherService;
@@ -81,7 +86,7 @@ public class BoardController {
 	@PostMapping("/signUpPro") 
 	  public String signup(Model model, User user) {
 	     	
-	
+			System.out.println("이게맞나?"+userservice.userExist(user.getUsername()));
 		  if (userservice.userExist(user.getUsername())) {
 		 		model.addAttribute("errorExId", "이미 존재하는 id 입니다");
 	            return "index";
@@ -138,8 +143,8 @@ public class BoardController {
 	    Map<String, Object> weatherData = weatherService.getCurrentWeather(lat, lon);
 	    model.addAttribute("weatherData", weatherData); // 날씨 정보 
 		
-		List<Board> list = boardservice.searchBoard(page, size, search);
-		int totalBoards = boardservice.countSearchBoard(search);
+		List<Board> list = boardService.searchBoard(page, size, search);
+		int totalBoards = boardService.countSearchBoard(search);
         
         Pagination pagination =PaginationUtil.getPagination(page, size, totalBoards);
         
@@ -155,89 +160,73 @@ public class BoardController {
 	}
 	
 	@GetMapping(value = "/board/write")
-	public String boardWrite() {
+	public String boardWrite(Model model) {
+		securityUtils.addAuthenticatedUserDetails(model);
 		return "board-write";
 	}
 
 	@PostMapping(value = "/board/writepro")
-	public String boardWritePro(Board board,HttpSession session) {
-		board.setbWriter((String) session.getAttribute("loggedInUser"));
-		boardservice.writeBoard(board);
+	public String boardWritePro(Board board, Model model) {
+		securityUtils.addAuthenticatedUserDetails(model);	 //로그인 유저 정보 전달 
+		board.setbWriter((String)model.getAttribute("loggedInUser"));
+		boardService.writeBoard(board);
 		return "redirect:/board/search";
 	}
 
 	@GetMapping(value = "/board/info")
-	public String boardInfo(Model model, Board board,HttpSession session) {
-		String loggedInUser = (String) session.getAttribute("loggedInUser");
-		String userAuth = (String) session.getAttribute("userAuth");
-		model.addAttribute("board", boardservice.infoBoard(board));
-		model.addAttribute("loggedInUser", loggedInUser); // 접속중인 유저 id 
-	    model.addAttribute("userAuth", userAuth); 
-	    
-	    System.out.println(boardservice.isAuthor(board));
+	public String boardInfo(Model model, Board board) {
+		securityUtils.addAuthenticatedUserDetails(model);	 //로그인 유저 정보 전달 
+		model.addAttribute("board", boardService.infoBoard(board));
+	    System.out.println(boardService.isAuthor(board));
 		return "board-info";
 	}
 
 	@RequestMapping(value = "/board/delete")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardervice.isAuthor(#board)")
 	public String boardDelete(Model model, Board board) {
-		boardservice.deleteBoard(board);
+		boardService.deleteBoard(board);
 		return "redirect:/board/search";
 	}
 
 	@GetMapping(value = "/board/edit")
     @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
 	public String boardEdit(Model model, Board board) {
-//		String check=boardservice.infoBoard(board).getbWriter();
-//		String checkS=(String) session.getAttribute("loggedInUser");
-//		if(!checkS.equals(check)) {
-//			model.addAttribute("warning","warning");
-//			return "redirect:/board/search";
-//		}
-		  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getAuthorities());
-		  if (authentication != null) {
-            model.addAttribute("authorities", authentication.getAuthorities());
-        }
-		System.out.println(boardservice.isAuthor(board));
-		model.addAttribute("board", boardservice.infoBoard(board));
+		securityUtils.addAuthenticatedUserDetails(model);
+		System.out.println(boardService.isAuthor(board));
+		model.addAttribute("board", boardService.infoBoard(board));
 		return "board-edit";
 	}
 
 	@RequestMapping(value = "/board/editpro")
-   @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
 	public String boardEditPro(Model model, Board board) {
-//		String check=boardservice.infoBoard(board).getbWriter();
-//		if((String)session.getAttribute("loggedInUser")!=check) {
-//			model.addAttribute("warning","warning");
-//			return "redirect:/board/search";
-//		}
-		boardservice.editBoard(board);
+		securityUtils.addAuthenticatedUserDetails(model);
+		boardService.editBoard(board);
 
 		return "redirect:/board/info?bId=" + board.getbId();
 	}
 
 	@GetMapping(value = "/board/reply")
 	public String boardReply(Model model, Board board) {
-		model.addAttribute("board", boardservice.infoBoard(board));
+		securityUtils.addAuthenticatedUserDetails(model);
+		model.addAttribute("board", boardService.infoBoard(board));
 		return "board-reply";
 	}
 
 	@PostMapping(value = "/board/replypro") // 답글
 	public String replyBoardPro(Model model, Board board, HttpSession session) {
-		model.addAttribute("board", boardservice.infoBoard(board));
-		board.setbWriter((String) session.getAttribute("loggedInUser"));
-		boardservice.replyBoard(board);
+		securityUtils.addAuthenticatedUserDetails(model);
+		model.addAttribute("board", boardService.infoBoard(board));
+		board.setbWriter((String) model.getAttribute("loggedInUser"));
+		boardService.replyBoard(board);
 		return "redirect:/board/search"; // 이전화면으로 리다이렉트
 	}
 	
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping(value = "/userInfo") // 답글
+	@GetMapping(value = "/user/Info") // 답글
 	public String userInfo(Model model, User user, HttpSession session) {
 		model.addAttribute("user", userservice.infoUser(user));
-		model.addAttribute("boardcount", boardservice.countBoardbyuser(user.getUsername()));
-		//board.setbWriter((String) session.getAttribute("loggedInUser"));
+		model.addAttribute("boardcount", boardService.countBoardbyuser(user.getUsername()));
 		return "user-info"; // 이전화면으로 리다이렉트
 	}
 	
@@ -274,8 +263,12 @@ public class BoardController {
 	}
 	
 	
-	
-	 
+	@ExceptionHandler(AccessDeniedException.class)  // 접근 거부 처리 
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+    public String handleAccessDeniedException(AccessDeniedException ex) {
+        return "403Forbidden"; 
+    }
+ 
 	
 
 	

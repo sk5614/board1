@@ -14,9 +14,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import com.boot.board.service.BoardService;
+import com.boot.board.security.CustomAccessDeniedHandler;
 import com.boot.board.security.CustomAuthenticationFailureHandler;
 
 
@@ -37,7 +39,10 @@ public class SecurityConfig  {
         return new BCryptPasswordEncoder();
     }
     
-    
+    @Bean
+    public AccessDeniedHandler customAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -46,6 +51,9 @@ public class SecurityConfig  {
 		        .antMatchers("/", "/index.jsp", "/signUpPro", "/signUp","/css/**","/js/**","/static/**","/resources" ).permitAll() // 인증 없이 접근 허용
 		        .anyRequest().authenticated()
 		        .and()
+	        .exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler()) // 예외처리 
+                .and()
             .formLogin()
                 .loginPage("/")
                 .loginProcessingUrl("/signIn")

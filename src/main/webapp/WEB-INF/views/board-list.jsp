@@ -139,7 +139,7 @@
                                         </a>
                                     </td>
                                     <td style="font-size: 0.8em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                        <a href="/userInfo?username=${board.bWriter}">
+                                        <a href="/user/Info?username=${board.bWriter}">
                                             ${board.bWriter}
                                         </a>
                                     </td>

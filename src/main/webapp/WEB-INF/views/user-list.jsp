@@ -89,7 +89,7 @@
                     <c:forEach var="user" items="${users}">
                         <tr>
                             <td>
-                                <a href="/userInfo?username=${user.username}">
+                                <a href="/user/Info?username=${user.username}">
                                     ${user.username}
                                 </a>
                             </td>
