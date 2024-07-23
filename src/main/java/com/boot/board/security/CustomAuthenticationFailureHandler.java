@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 //}
 
 @Component
-public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {  
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,

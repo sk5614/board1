@@ -1,6 +1,5 @@
 package com.boot.board.config;
 
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import com.boot.board.service.BoardService;
 import com.boot.board.security.CustomAccessDeniedHandler;

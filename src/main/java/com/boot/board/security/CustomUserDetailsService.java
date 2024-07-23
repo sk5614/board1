@@ -60,6 +60,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (uAuth == null || uAuth.isEmpty()) {
             throw new IllegalArgumentException("Authority cannot be null or empty");
         }
+        
         return Collections.singletonList(new SimpleGrantedAuthority(uAuth));
     }
 }

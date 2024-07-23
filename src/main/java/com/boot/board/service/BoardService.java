@@ -72,12 +72,8 @@ public class BoardService {
 	 public boolean isAuthor(Board board) {
 	        // 현재 인증된 사용자 정보 가져오기
 	        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	        String username = null;
 
-	        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-	            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-	            username = userDetails.getUsername();
-	        }
+	        String username = authentication.getPrincipal().toString();
 
 	        // Board 객체의 작성자 정보 가져오기
 	        Board checkWriter = boardmapper.infoBoard(board);
