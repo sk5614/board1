@@ -22,9 +22,6 @@
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
   
- <!--  <c:forEach var="authority" items="${authorities}">
-    <p>${authority.authority}</p>
-</c:forEach>  -->
 </div>
 
 </body>

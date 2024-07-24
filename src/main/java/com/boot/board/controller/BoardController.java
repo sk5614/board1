@@ -1,13 +1,10 @@
 package com.boot.board.controller;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 
@@ -15,11 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,26 +57,16 @@ public class BoardController {
     }
 
     
-    
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)  // 시작페이지 
 	public String index() {
 		System.out.println("인덱스 페이지 호출");
 		return "index";
 	}
 	
 	
-//    @PostMapping("/checkUsername")
-//    public ResponseEntity<String> checkUsername(@RequestBody String username) {
-//        boolean exists = userservice.userExist(username);
-//        if (exists) {
-//            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
-//        }
-//        return ResponseEntity.ok("Username available");
-//    }
-//	
 	
-	@PostMapping("/signUpPro") 
+	@PostMapping("/signUpPro")   // 회원가입 
 	  public String signup(Model model, User user) {
 	     	
 			System.out.println("이게맞나?"+userservice.userExist(user.getUsername()));
@@ -110,7 +93,7 @@ public class BoardController {
 	}
 	
 
-    @PostMapping("/signIn")
+    @PostMapping("/signIn")   //로그인 
     public String signIn(HttpServletRequest request, Model model) {
         String errorId = (String) request.getAttribute("errorId");
         String errorPassword = (String) request.getAttribute("errorPassword");
@@ -122,12 +105,12 @@ public class BoardController {
     }
 	
 	
-	    @GetMapping("/logout")
+	    @GetMapping("/logout")  // 로그아웃 
 	    public String logout(Model model) {
 	        return "index";  // index.jsp로 이동
 	    }	  
 	
-	@GetMapping(value = "/board/search")
+	@GetMapping(value = "/board/search")   // 게시글 목록 
 	public String boardSearch(Model model, 
 			@RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -159,13 +142,13 @@ public class BoardController {
 		return "board-list";
 	}
 	
-	@GetMapping(value = "/board/write")
+	@GetMapping(value = "/board/write")   // 글작성  form으로 
 	public String boardWrite(Model model) {
 		securityUtils.addAuthenticatedUserDetails(model);
 		return "board-write";
 	}
 
-	@PostMapping(value = "/board/writepro")
+	@PostMapping(value = "/board/writepro") // 글작성 
 	public String boardWritePro(Board board, Model model) {
 		securityUtils.addAuthenticatedUserDetails(model);	 //로그인 유저 정보 전달 
 		board.setbWriter((String)model.getAttribute("loggedInUser"));
@@ -173,7 +156,7 @@ public class BoardController {
 		return "redirect:/board/search";
 	}
 
-	@GetMapping(value = "/board/info")
+	@GetMapping(value = "/board/info")   // 게시글 정보 
 	public String boardInfo(Model model, Board board) {
 		securityUtils.addAuthenticatedUserDetails(model);	 //로그인 유저 정보 전달 
 		model.addAttribute("board", boardService.infoBoard(board));
@@ -181,15 +164,15 @@ public class BoardController {
 		return "board-info";
 	}
 
-	@RequestMapping(value = "/board/delete")
+	@RequestMapping(value = "/board/delete")  //게시글 삭제
     @PreAuthorize("hasRole('ROLE_ADMIN') or @boardervice.isAuthor(#board)")
 	public String boardDelete(Model model, Board board) {
 		boardService.deleteBoard(board);
 		return "redirect:/board/search";
 	}
 
-	@GetMapping(value = "/board/edit")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
+	@GetMapping(value = "/board/edit")  //게시글 수정 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardervice.isAuthor(#board)")
 	public String boardEdit(Model model, Board board) {
 		securityUtils.addAuthenticatedUserDetails(model);
 		System.out.println(boardService.isAuthor(board));
@@ -197,7 +180,7 @@ public class BoardController {
 		return "board-edit";
 	}
 
-	@RequestMapping(value = "/board/editpro")
+	@RequestMapping(value = "/board/editpro") //게시글 수정 
     @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
 	public String boardEditPro(Model model, Board board) {
 		securityUtils.addAuthenticatedUserDetails(model);
@@ -206,7 +189,7 @@ public class BoardController {
 		return "redirect:/board/info?bId=" + board.getbId();
 	}
 
-	@GetMapping(value = "/board/reply")
+	@GetMapping(value = "/board/reply")  // 답글 
 	public String boardReply(Model model, Board board) {
 		securityUtils.addAuthenticatedUserDetails(model);
 		model.addAttribute("board", boardService.infoBoard(board));
@@ -223,7 +206,7 @@ public class BoardController {
 	}
 	
 	
-	@GetMapping(value = "/user/Info") // 답글
+	@GetMapping(value = "/user/Info") // 회원정보
 	public String userInfo(Model model, User user, HttpSession session) {
 		model.addAttribute("user", userservice.infoUser(user));
 		model.addAttribute("boardcount", boardService.countBoardbyuser(user.getUsername()));
@@ -231,7 +214,7 @@ public class BoardController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping(value = "/user/list")
+	@GetMapping(value = "/user/list")   // 회원목록 
 	public String userList(Model model, 
 			@RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -255,7 +238,7 @@ public class BoardController {
 		return "user-list";
 	}
 	
-	@RequestMapping(value = "/user/edit")
+	@RequestMapping(value = "/user/edit")  // 회원권한 수정 
 	@ResponseBody
 	public String userEdit(@RequestBody  User user) {
 		userservice.editAuthority(user);

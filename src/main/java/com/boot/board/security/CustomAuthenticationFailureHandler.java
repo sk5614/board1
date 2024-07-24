@@ -20,7 +20,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        if (exception instanceof BadCredentialsException && "비밀번호 불일치".equals(exception.getMessage())) {
+        if (exception instanceof BadCredentialsException || "비밀번호 불일치".equals(exception.getMessage())) {
             request.setAttribute("errorPassword", exception.getMessage());
         } else if(exception instanceof UsernameNotFoundException) {
             request.setAttribute("errorId", exception.getMessage());
