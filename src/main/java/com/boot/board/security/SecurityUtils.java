@@ -12,7 +12,7 @@ import com.boot.board.service.UserService;
 @Component
 public class SecurityUtils {
 
-    private final UserService userService;
+    private final UserService userService;    // 순환참조 오류때문에 생성자 주입 사용 
 
     @Autowired
     public SecurityUtils(UserService userService) {

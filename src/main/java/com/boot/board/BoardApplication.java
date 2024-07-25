@@ -17,7 +17,7 @@ public class BoardApplication {
 	}
 	
     @Bean
-    public RestTemplate restTemplate() {
+    public RestTemplate restTemplate() {    // 날씨 api 때문에 추가  원래는 Restful http 요청용 
         return new RestTemplate();
     }
     

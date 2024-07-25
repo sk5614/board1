@@ -49,7 +49,7 @@ public class BoardController {
 	@Autowired WeatherService weatherService;
 	
 
-    private final SecurityUtils securityUtils;
+    private final SecurityUtils securityUtils;  // 순환참조 오류때문에 생성자 주입 사용 
 
     @Autowired
     public BoardController(SecurityUtils securityUtils) {

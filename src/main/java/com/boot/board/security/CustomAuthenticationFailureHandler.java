@@ -12,15 +12,14 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.stereotype.Component;
 
  
-//}
 
 @Component
-public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {  
+public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {    //  로그인 예외처리용 
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        if (exception instanceof BadCredentialsException || "비밀번호 불일치".equals(exception.getMessage())) {
+        if (exception instanceof BadCredentialsException || "비밀번호가 일치하지 않습니다.".equals(exception.getMessage())) {
             request.setAttribute("errorPassword", exception.getMessage());
         } else if(exception instanceof UsernameNotFoundException) {
             request.setAttribute("errorId", exception.getMessage());
