@@ -137,12 +137,15 @@ https://youtu.be/WNnXVCBOxIA
 
 <details>
 	
-  <summary>이미지 보기 </summary>
+  <summary>쿼리문 보기 </summary>
   <img src="https://github.com/user-attachments/assets/4d225447-027a-42d4-b9de-b0815f620929" alt="Example Image">
 </details>
 
 <details>
-
+	
+  <summary>동작 보기 </summary>
+  <img src="https://github.com/user-attachments/assets/16efe027-0133-4f12-9309-6181acb37b28" alt="Example Image">
+</details>
   
    
 </details>
