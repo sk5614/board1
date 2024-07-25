@@ -132,12 +132,8 @@ https://youtu.be/WNnXVCBOxIA
 
 </details>
 
- 
-## 권한 설정 
 
-
-
-#### CRUD - 
+## CRUD - 
 
 <details>
 	
