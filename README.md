@@ -152,6 +152,11 @@ https://youtu.be/WNnXVCBOxIA
 
 </details>
 
+## 성능모니터링 
+
+  <img src="https://github.com/user-attachments/assets/e8141321-d6ea-4e2d-a63b-1c3d509932f9" alt="Example Image">
+
+
 
 #### 개선점 
 
