@@ -163,9 +163,11 @@ https://youtu.be/WNnXVCBOxIA
 <details>
 	
   <summary>ec2 배포중에 생긴문제  </summary>
-	https://sk5614.tistory.com/44  
-	war 파일로 실행시켜서 해결 -
-
+	* Error parsing HTTP request header java.io.EOFException: null   배포후 실행시 해당오류 발생 
+ 	https://sk5614.tistory.com/44  war 파일로 실행시켜서 해결 
+	
+ 	https://sk5614.tistory.com/43 인바운드 규칙설정으로 해결
+	
 </details>
 
 
