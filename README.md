@@ -164,11 +164,24 @@ https://youtu.be/WNnXVCBOxIA
 	
   <summary>ec2 배포중에 생긴문제  </summary>
 	* Error parsing HTTP request header java.io.EOFException: null   배포후 실행시 해당오류 발생 
- 	https://sk5614.tistory.com/44  war 파일로 실행시켜서 해결 
+ 
+ 	 -https://sk5614.tistory.com/44  war 파일로 실행시켜서 해결 
 	
- 	https://sk5614.tistory.com/43 인바운드 규칙설정으로 해결
+ 	*RDS를 MySQL Workbench로 접속이 안되는 문제 
+ 
+ 	 -https://sk5614.tistory.com/43 인바운드 규칙설정으로 해결
+
+   	*EC2 페어키 권한 오류 
+
+    	 -https://sk5614.tistory.com/42  WSL에서 윈도우와 우분투 권한 충돌 문제로 예상 
 	
 </details>
+
+<details>
+	  <summary>환경 설정 관련  </summary>
+
+</details>
+   
 
 
 
