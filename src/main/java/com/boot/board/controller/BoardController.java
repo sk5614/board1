@@ -165,14 +165,14 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/board/delete")  //게시글 삭제
-    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardervice.isAuthor(#board)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
 	public String boardDelete(Model model, Board board) {
 		boardService.deleteBoard(board);
 		return "redirect:/board/search";
 	}
 
 	@GetMapping(value = "/board/edit")  //게시글 수정 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardervice.isAuthor(#board)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @boardService.isAuthor(#board)")
 	public String boardEdit(Model model, Board board) {
 		securityUtils.addAuthenticatedUserDetails(model);
 		System.out.println(boardService.isAuthor(board));

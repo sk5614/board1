@@ -46,7 +46,8 @@ public class SecurityConfig  {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     	http
 	        .authorizeRequests()
-		        .antMatchers("/", "/index.jsp", "/signUpPro", "/signUp","/css/**","/js/**","/static/**","/resources" ).permitAll() // 인증 없이 접근 허용
+		        .antMatchers("/", "/index.jsp", "/signUpPro", "/signUp","/css/**","/js/**","/static/**","/resources",
+		        		"/actuator/prometheus" ).permitAll() // 인증 없이 접근 허용
 		        .anyRequest().authenticated()
 		        .and()
 	        .exceptionHandling()
