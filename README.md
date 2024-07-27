@@ -159,7 +159,15 @@ https://youtu.be/WNnXVCBOxIA
 
 
 
-#### 개선점 
+## 트러블슈팅 
+<details>
+	
+  <summary>ec2 배포중에 생긴문제  </summary>
+	https://sk5614.tistory.com/44  
+	war 파일로 실행시켜서 해결 -
+
+</details>
+
 
 
 
