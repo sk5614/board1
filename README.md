@@ -160,28 +160,46 @@ https://youtu.be/WNnXVCBOxIA
 
 
 ## 트러블슈팅 
+
+
+* Error parsing HTTP request header java.io.EOFException: null   배포후 실행시 해당오류 발생 
+
+ -https://sk5614.tistory.com/44  war 파일로 실행시켜서 해결 
+
+*RDS를 MySQL Workbench로 접속이 안되는 문제 
+
+ -https://sk5614.tistory.com/43 인바운드 규칙설정으로 해결
+
+*EC2 페어키 권한 오류 
+
+ -https://sk5614.tistory.com/42  WSL에서 윈도우와 우분투 권한 충돌 문제로 예상 
+
+
+
+
 <details>
 	
-  <summary>ec2 배포중에 생긴문제  </summary>
-	* Error parsing HTTP request header java.io.EOFException: null   배포후 실행시 해당오류 발생 
- 
- 	 -https://sk5614.tistory.com/44  war 파일로 실행시켜서 해결 
-	
- 	*RDS를 MySQL Workbench로 접속이 안되는 문제 
- 
- 	 -https://sk5614.tistory.com/43 인바운드 규칙설정으로 해결
+  <summary>*Spring security 관련  </summary>
+  
+   -가장 힘들었던부분 특정 url은 해당권한만 접근가능하게 만드는과정에서 @PreAuthorize을 사용하려고 했습니다.  
 
-   	*EC2 페어키 권한 오류 
+  그러나 기존 로그인은 HTTP session 로그인이고  @PreAuthorize는 security 기능을 써야 가능해서 
 
-    	 -https://sk5614.tistory.com/42  WSL에서 윈도우와 우분투 권한 충돌 문제로 예상 
-	
+  기존 로그인도 security 로그인으로 바꾸고 예외처리에서 시간을 많이 보냈습니다. 
+
+  처음 시작할 당시 security 로그인은 controller 들어오기전에 처리된다는걸 모르는 상태에서 무작정 시작해서 시간낭비를 많이 했습니다. 
+
+  구글링으로 다른 사람들 코드 참고하고 디버깅해가면서 필요한 기능만 구현했습니다 
+
+  ![image](https://github.com/user-attachments/assets/f3c4292d-3bf0-47d9-ab31-f5f10cb7e273)
+
+  
+
+  
+
 </details>
 
-<details>
-	  <summary>환경 설정 관련  </summary>
-
-</details>
-   
+  
 
 
 
