@@ -18,7 +18,7 @@ Springboot 게시판입니다
 - **Server** : tomcat
 
 ## 배포 링크
-http://noble-minta-sw5614-3279dd38.koyeb.app/   (현재접속불가)
+~~ http://noble-minta-sw5614-3279dd38.koyeb.app/ ~~  (현재접속불가)
 
 http://3.38.245.89:8080/ (접속 가능)
 
