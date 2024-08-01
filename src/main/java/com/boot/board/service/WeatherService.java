@@ -39,7 +39,7 @@ public class WeatherService {
             Map<String, Object> weatherData = objectMapper.readValue(responseBody, new TypeReference<Map<String, Object>>() {});
 
             // 온도 데이터를 섭씨로 변환하여 Map에 추가
-            double tempKelvin = ((Number) ((Map<String, Object>) weatherData.get("main")).get("temp")).doubleValue();
+            double tempKelvin = (Double) ((Map<String, Object>) weatherData.get("main")).get("temp");
             int tempCelsius = utils.convertTemp(tempKelvin);
             weatherData.put("tempCelsius", tempCelsius);
             

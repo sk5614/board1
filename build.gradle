@@ -40,6 +40,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator' //actuator (모니터링)
 	implementation "io.micrometer:micrometer-registry-prometheus"
 	implementation 'org.springframework.security:spring-security-taglibs'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket' // 웹소켓 ( 채팅용)
 	
 	
 	testCompileOnly 'org.projectlombok:lombok:1.18.24' // 테스트 환경에서 주입

@@ -253,6 +253,10 @@ public class BoardController {
     }
  
 	
+    @GetMapping("/chat")
+    public String chat() {
+        return "chat";
+    }
 
 	
     	  
