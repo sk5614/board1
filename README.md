@@ -21,9 +21,9 @@ Springboot 게시판입니다
 
 https://inc-gilda-forstudy-b457f6f4.koyeb.app
 
-http://3.38.245.89:8080/ (접속 가능)
+http://3.38.245.89:8080/ 
 
--**호스팅플랫폼** :  Koyeb (계정잠김),Amazon Ec2, Amazon RDS
+-**호스팅플랫폼** :  Koyeb ,Amazon Ec2, Amazon RDS
 
 
 ## 작동 영상 
