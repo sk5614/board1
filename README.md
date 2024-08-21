@@ -23,6 +23,8 @@ https://inc-gilda-forstudy-b457f6f4.koyeb.app
 
 http://3.38.245.89:8080/ 
 
+test id/pw : zz/zz  관리자권한 
+
 -**호스팅플랫폼** :  Koyeb ,Amazon Ec2, Amazon RDS
 
 
