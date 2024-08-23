@@ -18,11 +18,14 @@ Springboot 게시판입니다
 - **Server** : tomcat
 
 ## 배포 링크
-~~http://noble-minta-sw5614-3279dd38.koyeb.app/~~  (현재접속불가)
 
-http://3.38.245.89:8080/ (접속 가능)
+https://inc-gilda-forstudy-b457f6f4.koyeb.app
 
--**호스팅플랫폼** :  Koyeb (계정잠김),Amazon Ec2, Amazon RDS
+http://3.38.245.89:8080/ 
+
+test id/pw : zz/zz  관리자권한 
+
+-**호스팅플랫폼** :  Koyeb ,Amazon Ec2, Amazon RDS
 
 
 ## 작동 영상 
@@ -194,6 +197,7 @@ https://youtu.be/WNnXVCBOxIA
   ![image](https://github.com/user-attachments/assets/f3c4292d-3bf0-47d9-ab31-f5f10cb7e273)
 
   
+
 
   
 
