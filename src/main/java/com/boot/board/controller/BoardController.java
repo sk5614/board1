@@ -153,7 +153,8 @@ public class BoardController {
 		securityUtils.addAuthenticatedUserDetails(model);	 //로그인 유저 정보 전달 
 		board.setbWriter((String)model.getAttribute("loggedInUser"));
 		boardService.writeBoard(board);
-		return "redirect:/board/search";
+		//return "redirect:/board/search";
+		return "board-list";
 	}
 
 	@GetMapping(value = "/board/info")   // 게시글 정보 
